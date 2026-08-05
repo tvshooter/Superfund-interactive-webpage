@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contaminated Sites in the Houston TV Market — Superfund &amp; Brownfields</title>
 <meta name="description" content="An interactive map of EPA Superfund (National Priorities List) sites and brownfield properties across the 20 counties of the Houston television market.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff5a3c'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%230f1419'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <style>
   :root{
@@ -123,15 +124,19 @@
 
   @media (max-width:820px){
     #main{flex-direction:column}
-    #sidebar{width:auto;flex:0 0 auto;max-height:52%;border-right:none;
-      border-bottom:1px solid var(--line)}
-    #map{min-height:48vh}
+    #sidebar{width:auto;flex:0 0 auto;max-height:55%;border-right:none;
+      border-bottom:1px solid var(--line);overflow-y:auto}
+    #list{overflow:visible}
+    #map{flex:1 1 auto;min-height:45vh}
     header h1{font-size:17px}
+    header{padding:11px 16px}
+    #sidebar.collapsed{max-height:none}
     #sidebar.collapsed #list,#sidebar.collapsed #resulthead,
-    #sidebar.collapsed #controls{display:none}
+    #sidebar.collapsed #controls,#sidebar.collapsed #empty{display:none}
     #sidebar-toggle{
-      display:block;width:100%;padding:10px;background:var(--panel-2);
-      border:none;border-top:1px solid var(--line);color:var(--text);
+      display:block;order:-1;position:sticky;top:0;z-index:5;
+      width:100%;padding:10px;background:var(--panel-2);
+      border:none;border-bottom:1px solid var(--line);color:var(--text);
       font-size:13px;cursor:pointer;
     }
   }
@@ -174,7 +179,10 @@
 
       <div id="resulthead">
         <span id="resultcount">Loading…</span>
-        <button type="button" id="reset">Reset view</button>
+        <span style="display:flex;gap:6px">
+          <button type="button" id="csv">Export CSV</button>
+          <button type="button" id="reset">Reset view</button>
+        </span>
       </div>
       <div id="list"></div>
       <div id="empty">No sites match those filters.</div>
@@ -215,6 +223,13 @@
 
   var sites = [];        // normalized records
   var defaultBounds = null;
+  var userMoved = false;   // true once the reader pans or zooms themselves
+
+  function fitAll(){
+    if (!defaultBounds) return;
+    map.fitBounds(defaultBounds, { padding:[12,12], animate:false });
+    userMoved = false;     // fitBounds fires zoomstart; ignore our own move
+  }
 
   // ---- helpers -----------------------------------------------------------
   function esc(s){
@@ -250,7 +265,7 @@
       interactive: false
     }).addTo(countyLayer);
     defaultBounds = cl.getBounds();
-    map.fitBounds(defaultBounds, { padding:[12,12] });
+    fitAll();
 
     sf.features.forEach(function(f){
       var p = f.properties;
@@ -452,14 +467,57 @@
     document.getElementById('t-sfd').checked = true;
     document.getElementById('t-bf').checked = true;
     render();
-    if (defaultBounds) map.fitBounds(defaultBounds, { padding:[12,12] });
+    fitAll();
+  });
+
+  document.getElementById('csv').addEventListener('click', function(){
+    var f = currentFilters();
+    var rows = sites.filter(function(s){ return matches(s, f); });
+    var cols = ['category','name','address','city','county','zip','latitude',
+                'longitude','status','epa_id','acres_id','hazard_score',
+                'proposed','listed_on_npl','construction_complete',
+                'deleted_from_npl','epa_link'];
+    function cell(v){
+      if (v === null || v === undefined) return '';
+      var s = String(v);
+      return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+    }
+    var lines = [cols.join(',')];
+    rows.forEach(function(s){
+      lines.push([
+        s.kind === 'bf' ? 'Brownfield' : 'Superfund NPL',
+        s.name, s.address || '', s.city, s.county, s.zip || '', s.lat, s.lon,
+        s.status || '', s.epaId || '', s.acresId || '', s.score || '',
+        s.proposed || '', s.listed || '', s.constructionDone || '',
+        s.deletedDate || '', s.profileUrl || ''
+      ].map(cell).join(','));
+    });
+    var blob = new Blob([lines.join('\n')], { type:'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'houston-dma-contaminated-sites.csv';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
   });
 
   var sb = document.getElementById('sidebar');
   document.getElementById('sidebar-toggle').addEventListener('click', function(){
     sb.classList.toggle('collapsed');
     this.textContent = sb.classList.contains('collapsed') ? 'Show list' : 'Hide list';
-    setTimeout(function(){ map.invalidateSize(); }, 60);
+    setTimeout(refit, 60);
+  });
+
+  // Keep the whole market in view until the reader navigates themselves.
+  map.on('zoomstart dragstart', function(){ userMoved = true; });
+  function refit(){
+    map.invalidateSize();
+    if (!userMoved) fitAll();
+  }
+  window.addEventListener('resize', function(){
+    clearTimeout(window.__refitT);
+    window.__refitT = setTimeout(refit, 200);
   });
 
   // legend
