@@ -1,5 +1,5 @@
 {
-  "built_utc": "2026-08-05T16:25:13+00:00",
+  "built_utc": "2026-08-05T16:28:14+00:00",
   "dma": "Houston, TX (Nielsen DMA)",
   "counties": [
     "Austin",
@@ -26,9 +26,9 @@
   "counties_missing": [],
   "counts": {
     "superfund": 25,
-    "brownfields": 0,
+    "brownfields": 192,
     "superfund_in_bbox": 25,
-    "brownfields_in_bbox": 8127
+    "brownfields_in_bbox": 220
   },
   "sources": {
     "superfund": {
@@ -37,9 +37,9 @@
       "name": "Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information"
     },
     "brownfields": {
-      "service": "https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Brownfields/FeatureServer",
-      "layer": 8,
-      "name": "CIMC_ACRES_JURISDICTION_GRANT"
+      "service": "https://geopub.epa.gov/arcgis/rest/services/EMEF/efpoints/MapServer",
+      "layer": 5,
+      "name": "Brownfields"
     },
     "counties": {
       "service": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/1"
@@ -83,14 +83,22 @@
     ],
     "brownfields": [
       "OBJECTID",
-      "Field1",
-      "JURISDICTION_ID",
-      "GRANT_ID",
-      "GRANT_STATUS",
-      "GRANT_TYPE",
-      "PRIMARY_JURISDICTION",
-      "RECIPIENT_NAME",
-      "COOPERATIVE_AGREEMENT_PC"
+      "registry_id",
+      "primary_name",
+      "location_address",
+      "city_name",
+      "county_name",
+      "state_code",
+      "epa_region",
+      "postal_code",
+      "latitude",
+      "longitude",
+      "pgm_sys_acrnm",
+      "pgm_sys_id",
+      "fips_code",
+      "huc_code",
+      "facility_url",
+      "Shape"
     ]
   }
 }

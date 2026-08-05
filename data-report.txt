@@ -1,16 +1,73 @@
 HOUSTON DMA SITE DATA REPORT
-built 2026-08-05T16:25:13+00:00
+built 2026-08-05T16:28:14+00:00
 counties found: ['Austin', 'Brazoria', 'Calhoun', 'Chambers', 'Colorado', 'Fort Bend', 'Galveston', 'Grimes', 'Harris', 'Jackson', 'Liberty', 'Matagorda', 'Montgomery', 'Polk', 'San Jacinto', 'Trinity', 'Walker', 'Waller', 'Washington', 'Wharton']
 counties missing: []
-counts: {"superfund": 25, "brownfields": 0, "superfund_in_bbox": 25, "brownfields_in_bbox": 8127}
+counts: {"superfund": 25, "brownfields": 192, "superfund_in_bbox": 25, "brownfields_in_bbox": 220}
 
-LAYER INVENTORY (what each EPA service offers)
-  Superfund service:
-    [0] 'Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information' geom=esriGeometryPoint fields=33
-  Brownfields service:
-    [2] 'Brownfield Grant Jurisdictions' geom=esriGeometryPolygon fields=42
-    [8] 'CIMC_ACRES_JURISDICTION_GRANT' geom=None fields=9
-  chosen: superfund=[0] 'Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information'  brownfields=[8] 'CIMC_ACRES_JURISDICTION_GRANT'
+SERVICE DISCOVERY (candidates tried, layers seen)
+  Superfund:
+[
+  {
+    "service": "https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Superfund_National_Priorities_List_%28NPL%29_Sites_with_Status_Information/FeatureServer",
+    "layers": [
+      [
+        0,
+        "Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information",
+        "esriGeometryPoint"
+      ]
+    ],
+    "chosen": [
+      0,
+      "Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information",
+      "esriGeometryPoint"
+    ]
+  }
+]
+  Brownfields:
+[
+  {
+    "service": "https://geopub.epa.gov/arcgis/rest/services/EMEF/efpoints/MapServer",
+    "layers": [
+      [
+        0,
+        "Superfund",
+        "esriGeometryPoint"
+      ],
+      [
+        1,
+        "Toxic releases",
+        "esriGeometryPoint"
+      ],
+      [
+        2,
+        "Water dischargers",
+        "esriGeometryPoint"
+      ],
+      [
+        3,
+        "Air pollution",
+        "esriGeometryPoint"
+      ],
+      [
+        4,
+        "Hazardous waste",
+        "esriGeometryPoint"
+      ],
+      [
+        5,
+        "Brownfields",
+        "esriGeometryPoint"
+      ]
+    ],
+    "chosen": [
+      5,
+      "Brownfields",
+      "esriGeometryPoint"
+    ]
+  }
+]
+  chosen: superfund=[0] 'Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information' @ https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Superfund_National_Priorities_List_%28NPL%29_Sites_with_Status_Information/FeatureServer
+          brownfields=[5] 'Brownfields' @ https://geopub.epa.gov/arcgis/rest/services/EMEF/efpoints/MapServer
 
 ======================================================================
 SUPERFUND FIELDS
@@ -199,15 +256,88 @@ SUPERFUND VALUE COUNTS (fields with <=25 distinct values)
 BROWNFIELDS FIELDS
 ======================================================================
   OBJECTID  (esriFieldTypeOID)  alias='OBJECTID'
-  Field1  (esriFieldTypeInteger)  alias='Field1'
-  JURISDICTION_ID  (esriFieldTypeInteger)  alias='JURISDICTION_ID'
-  GRANT_ID  (esriFieldTypeInteger)  alias='GRANT_ID'
-  GRANT_STATUS  (esriFieldTypeString)  alias='GRANT_STATUS'
-  GRANT_TYPE  (esriFieldTypeString)  alias='GRANT_TYPE'
-  PRIMARY_JURISDICTION  (esriFieldTypeString)  alias='PRIMARY_JURISDICTION'
-  RECIPIENT_NAME  (esriFieldTypeString)  alias='RECIPIENT_NAME'
-  COOPERATIVE_AGREEMENT_PC  (esriFieldTypeString)  alias='COOPERATIVE_AGREEMENT_PC'
+  registry_id  (esriFieldTypeString)  alias='Registry ID'
+  primary_name  (esriFieldTypeString)  alias='Primary Name'
+  location_address  (esriFieldTypeString)  alias='Address'
+  city_name  (esriFieldTypeString)  alias='City'
+  county_name  (esriFieldTypeString)  alias='County'
+  state_code  (esriFieldTypeString)  alias='State'
+  epa_region  (esriFieldTypeString)  alias='EPA Region'
+  postal_code  (esriFieldTypeString)  alias='ZIP Code'
+  latitude  (esriFieldTypeDouble)  alias='Latitude'
+  longitude  (esriFieldTypeDouble)  alias='Longitude'
+  pgm_sys_acrnm  (esriFieldTypeString)  alias='Program_System Acronym'
+  pgm_sys_id  (esriFieldTypeString)  alias='Program System ID'
+  fips_code  (esriFieldTypeString)  alias='FIPS Code'
+  huc_code  (esriFieldTypeString)  alias='HUC Code'
+  facility_url  (esriFieldTypeString)  alias='Facility URL'
+  Shape  (esriFieldTypeGeometry)  alias='Shape'
 
 BROWNFIELDS SAMPLE RECORDS
+{
+  "OBJECTID": 1762,
+  "registry_id": "110015333245",
+  "primary_name": "9929 HOMESTEAD ROAD",
+  "location_address": "9929 HOMESTEAD ROAD",
+  "city_name": "HOUSTON",
+  "county_name": "HARRIS",
+  "state_code": "TX",
+  "epa_region": "Region 06",
+  "postal_code": "77016",
+  "latitude": 29.85606,
+  "longitude": -95.30059,
+  "pgm_sys_acrnm": "ACRES",
+  "pgm_sys_id": "13971",
+  "fips_code": "",
+  "huc_code": "",
+  "facility_url": "https://ofmpub.epa.gov/apex/cimc/f?p=CIMC:31::::Y,31,0:P31_ID:13971",
+  "dma_county": "Harris"
+}
+{
+  "OBJECTID": 2039,
+  "registry_id": "110015337009",
+  "primary_name": "NORTH RICHMOND ROAD",
+  "location_address": "404 RICHMOND ROAD",
+  "city_name": "WHARTON",
+  "county_name": "WHARTON",
+  "state_code": "TX",
+  "epa_region": "Region 06",
+  "postal_code": "77488",
+  "latitude": 29.314714,
+  "longitude": -96.101704,
+  "pgm_sys_acrnm": "ACRES",
+  "pgm_sys_id": "10904",
+  "fips_code": "",
+  "huc_code": "",
+  "facility_url": "https://ofmpub.epa.gov/apex/cimc/f?p=CIMC:31::::Y,31,0:P31_ID:10904",
+  "dma_county": "Wharton"
+}
+{
+  "OBJECTID": 2528,
+  "registry_id": "110030942951",
+  "primary_name": "OLD MUNICIPAL INCINERATOR",
+  "location_address": "3 LENNOX AVENUE",
+  "city_name": "GALVESTON",
+  "county_name": "GALVESTON",
+  "state_code": "TX",
+  "epa_region": "Region 06",
+  "postal_code": "77551",
+  "latitude": 29.29015,
+  "longitude": -94.83517,
+  "pgm_sys_acrnm": "ACRES",
+  "pgm_sys_id": "20882",
+  "fips_code": "",
+  "huc_code": "",
+  "facility_url": "https://ofmpub.epa.gov/apex/cimc/f?p=CIMC:31::::Y,31,0:P31_ID:20882",
+  "dma_county": "Galveston"
+}
 
 BROWNFIELDS VALUE COUNTS (fields with <=25 distinct values)
+  city_name: {"HOUSTON": 140, "WHARTON": 1, "GALVESTON": 32, "INDIAN VILLAGE": 1, "DICKINSON": 2, "LEAGUE CITY": 3, "CONROE": 2, "EDNA": 1, "WEST COLUMBIA": 1, "MARKHAM": 1, "PEARLAND": 1, "ANAHUAC": 1, "AUSTIN": 4, "LIVINGSTON": 1, "EL CAMPO": 1}
+  county_name: {"HARRIS": 140, "WHARTON": 2, "GALVESTON": 35, "POLK": 2, "HIDALGO": 2, "MONTGOMERY": 2, "JACKSON": 1, "BRAZORIA": 2, "MATAGORDA": 1, "CHAMBERS": 1, "TRAVIS": 4}
+  state_code: {"TX": 192}
+  epa_region: {"Region 06": 192}
+  pgm_sys_acrnm: {"ACRES": 192}
+  fips_code: {"": 192}
+  huc_code: {"": 192}
+  dma_county: {"Harris": 140, "Wharton": 2, "Galveston": 37, "Polk": 2, "Montgomery": 2, "Jackson": 1, "Brazoria": 2, "Matagorda": 1, "Chambers": 1, "Austin": 4}
