@@ -1,5 +1,5 @@
 {
-  "built_utc": "2026-08-05T16:22:52+00:00",
+  "built_utc": "2026-08-05T16:25:13+00:00",
   "dma": "Houston, TX (Nielsen DMA)",
   "counties": [
     "Austin",
@@ -28,7 +28,7 @@
     "superfund": 25,
     "brownfields": 0,
     "superfund_in_bbox": 25,
-    "brownfields_in_bbox": 15
+    "brownfields_in_bbox": 8127
   },
   "sources": {
     "superfund": {
@@ -38,8 +38,8 @@
     },
     "brownfields": {
       "service": "https://services.arcgis.com/cJ9YHowT8TU7DUyn/arcgis/rest/services/Brownfields/FeatureServer",
-      "layer": 2,
-      "name": "Brownfield Grant Jurisdictions"
+      "layer": 8,
+      "name": "CIMC_ACRES_JURISDICTION_GRANT"
     },
     "counties": {
       "service": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/1"
@@ -83,47 +83,14 @@
     ],
     "brownfields": [
       "OBJECTID",
+      "Field1",
       "JURISDICTION_ID",
-      "JURISDICTION_TYPE",
-      "JOB_G",
-      "JOB_P",
-      "ASSESS_G",
-      "ASSESS_P",
-      "CLEANUP_G",
-      "RLF_G",
-      "RLF_P",
-      "ST_TRIBE_G",
-      "JURISDICTION_NAME",
-      "MAP_ORDER",
-      "MAP_CODE",
-      "NUMPOLYS",
-      "VE_CENTER",
-      "VE_BB",
-      "VE_DESC",
-      "TBA_G",
-      "MP_G",
-      "VE_JTGRANTS",
-      "VE_JTPILOTS",
-      "VE_ASSESSGRANTS",
-      "VE_ASSESSPILOTS",
-      "VE_CLEANUPGRANTS",
-      "VE_RLFGRANTS",
-      "VE_128AGRANTS",
-      "VE_TBAGRANTS",
-      "VE_MPGRANTS",
-      "VE_RLFPILOTS",
-      "STATE_CODE",
-      "COUNTY",
-      "AWP_G",
-      "VE_AWPGRANTS",
-      "VE_128APGRANTS",
-      "ST_TRIBE_P",
-      "SHOWCASE",
-      "VE_SHOWCASE",
-      "CONGRESSIONAL_DIST",
-      "SHAPE_WKT",
-      "Shape__Area",
-      "Shape__Length"
+      "GRANT_ID",
+      "GRANT_STATUS",
+      "GRANT_TYPE",
+      "PRIMARY_JURISDICTION",
+      "RECIPIENT_NAME",
+      "COOPERATIVE_AGREEMENT_PC"
     ]
   }
 }

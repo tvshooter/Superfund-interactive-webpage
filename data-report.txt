@@ -1,8 +1,16 @@
 HOUSTON DMA SITE DATA REPORT
-built 2026-08-05T16:22:52+00:00
+built 2026-08-05T16:25:13+00:00
 counties found: ['Austin', 'Brazoria', 'Calhoun', 'Chambers', 'Colorado', 'Fort Bend', 'Galveston', 'Grimes', 'Harris', 'Jackson', 'Liberty', 'Matagorda', 'Montgomery', 'Polk', 'San Jacinto', 'Trinity', 'Walker', 'Waller', 'Washington', 'Wharton']
 counties missing: []
-counts: {"superfund": 25, "brownfields": 0, "superfund_in_bbox": 25, "brownfields_in_bbox": 15}
+counts: {"superfund": 25, "brownfields": 0, "superfund_in_bbox": 25, "brownfields_in_bbox": 8127}
+
+LAYER INVENTORY (what each EPA service offers)
+  Superfund service:
+    [0] 'Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information' geom=esriGeometryPoint fields=33
+  Brownfields service:
+    [2] 'Brownfield Grant Jurisdictions' geom=esriGeometryPolygon fields=42
+    [8] 'CIMC_ACRES_JURISDICTION_GRANT' geom=None fields=9
+  chosen: superfund=[0] 'Superfund_National_Priorities_List_(NPL)_Sites_with_Status_Information'  brownfields=[8] 'CIMC_ACRES_JURISDICTION_GRANT'
 
 ======================================================================
 SUPERFUND FIELDS
@@ -191,47 +199,14 @@ SUPERFUND VALUE COUNTS (fields with <=25 distinct values)
 BROWNFIELDS FIELDS
 ======================================================================
   OBJECTID  (esriFieldTypeOID)  alias='OBJECTID'
+  Field1  (esriFieldTypeInteger)  alias='Field1'
   JURISDICTION_ID  (esriFieldTypeInteger)  alias='JURISDICTION_ID'
-  JURISDICTION_TYPE  (esriFieldTypeString)  alias='JURISDICTION_TYPE'
-  JOB_G  (esriFieldTypeString)  alias='JOB_G'
-  JOB_P  (esriFieldTypeString)  alias='JOB_P'
-  ASSESS_G  (esriFieldTypeString)  alias='ASSESS_G'
-  ASSESS_P  (esriFieldTypeString)  alias='ASSESS_P'
-  CLEANUP_G  (esriFieldTypeString)  alias='CLEANUP_G'
-  RLF_G  (esriFieldTypeString)  alias='RLF_G'
-  RLF_P  (esriFieldTypeString)  alias='RLF_P'
-  ST_TRIBE_G  (esriFieldTypeString)  alias='ST_TRIBE_G'
-  JURISDICTION_NAME  (esriFieldTypeString)  alias='JURISDICTION_NAME'
-  MAP_ORDER  (esriFieldTypeSmallInteger)  alias='MAP_ORDER'
-  MAP_CODE  (esriFieldTypeString)  alias='MAP_CODE'
-  NUMPOLYS  (esriFieldTypeDouble)  alias='NUMPOLYS'
-  VE_CENTER  (esriFieldTypeString)  alias='VE_CENTER'
-  VE_BB  (esriFieldTypeString)  alias='VE_BB'
-  VE_DESC  (esriFieldTypeString)  alias='VE_DESC'
-  TBA_G  (esriFieldTypeString)  alias='TBA_G'
-  MP_G  (esriFieldTypeString)  alias='MP_G'
-  VE_JTGRANTS  (esriFieldTypeString)  alias='VE_JTGRANTS'
-  VE_JTPILOTS  (esriFieldTypeString)  alias='VE_JTPILOTS'
-  VE_ASSESSGRANTS  (esriFieldTypeString)  alias='VE_ASSESSGRANTS'
-  VE_ASSESSPILOTS  (esriFieldTypeString)  alias='VE_ASSESSPILOTS'
-  VE_CLEANUPGRANTS  (esriFieldTypeString)  alias='VE_CLEANUPGRANTS'
-  VE_RLFGRANTS  (esriFieldTypeString)  alias='VE_RLFGRANTS'
-  VE_128AGRANTS  (esriFieldTypeString)  alias='VE_128AGRANTS'
-  VE_TBAGRANTS  (esriFieldTypeString)  alias='VE_TBAGRANTS'
-  VE_MPGRANTS  (esriFieldTypeString)  alias='VE_MPGRANTS'
-  VE_RLFPILOTS  (esriFieldTypeString)  alias='VE_RLFPILOTS'
-  STATE_CODE  (esriFieldTypeString)  alias='STATE_CODE'
-  COUNTY  (esriFieldTypeString)  alias='COUNTY'
-  AWP_G  (esriFieldTypeString)  alias='AWP_G'
-  VE_AWPGRANTS  (esriFieldTypeString)  alias='VE_AWPGRANTS'
-  VE_128APGRANTS  (esriFieldTypeString)  alias='VE_128APGRANTS'
-  ST_TRIBE_P  (esriFieldTypeString)  alias='ST_TRIBE_P'
-  SHOWCASE  (esriFieldTypeString)  alias='SHOWCASE'
-  VE_SHOWCASE  (esriFieldTypeString)  alias='VE_SHOWCASE'
-  CONGRESSIONAL_DIST  (esriFieldTypeString)  alias='CONGRESSIONAL_DIST'
-  SHAPE_WKT  (esriFieldTypeString)  alias='SHAPE_WKT'
-  Shape__Area  (esriFieldTypeDouble)  alias='Shape__Area'
-  Shape__Length  (esriFieldTypeDouble)  alias='Shape__Length'
+  GRANT_ID  (esriFieldTypeInteger)  alias='GRANT_ID'
+  GRANT_STATUS  (esriFieldTypeString)  alias='GRANT_STATUS'
+  GRANT_TYPE  (esriFieldTypeString)  alias='GRANT_TYPE'
+  PRIMARY_JURISDICTION  (esriFieldTypeString)  alias='PRIMARY_JURISDICTION'
+  RECIPIENT_NAME  (esriFieldTypeString)  alias='RECIPIENT_NAME'
+  COOPERATIVE_AGREEMENT_PC  (esriFieldTypeString)  alias='COOPERATIVE_AGREEMENT_PC'
 
 BROWNFIELDS SAMPLE RECORDS
 
