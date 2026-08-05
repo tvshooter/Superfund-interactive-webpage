@@ -1,5 +1,5 @@
 {
-  "built_utc": "2026-08-05T20:00:52+00:00",
+  "built_utc": "2026-08-05T22:40:42+00:00",
   "dma": "Houston, TX (Nielsen DMA)",
   "counties": [
     "Austin",
@@ -27,8 +27,12 @@
   "counts": {
     "superfund": 25,
     "brownfields": 192,
+    "tceq_vcp": 980,
+    "tceq_bsa": 28,
     "superfund_in_bbox": 25,
-    "brownfields_in_bbox": 220
+    "brownfields_in_bbox": 220,
+    "tceq_vcp_in_bbox": 1063,
+    "tceq_bsa_in_bbox": 40
   },
   "sources": {
     "superfund": {
@@ -40,6 +44,12 @@
       "service": "https://geopub.epa.gov/arcgis/rest/services/EMEF/efpoints/MapServer",
       "layer": 5,
       "name": "Brownfields"
+    },
+    "tceq_vcp": {
+      "service": "https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/VCP/MapServer/0"
+    },
+    "tceq_bsa": {
+      "service": "https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Brownfield/MapServer/0"
     },
     "counties": {
       "service": "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/State_County/MapServer/1"
@@ -99,6 +109,30 @@
       "huc_code",
       "facility_url",
       "Shape"
+    ],
+    "tceq": [
+      "ADDR_DESC",
+      "CITY",
+      "COUNTY",
+      "HORZ_ACC",
+      "HORZ_DATE",
+      "HORZ_DATUM",
+      "HORZ_DESC",
+      "HORZ_METH",
+      "HORZ_ORG",
+      "HORZ_REF",
+      "LAT_DD",
+      "LONG_DD",
+      "OBJECTID",
+      "PHYS_ADDR",
+      "REGION",
+      "REM_PROG",
+      "RN",
+      "SITE_NAME",
+      "VCP_ID",
+      "ZIP_CODE",
+      "dma_county",
+      "tceq_program"
     ]
   }
 }

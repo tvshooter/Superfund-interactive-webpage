@@ -1,8 +1,8 @@
 HOUSTON DMA SITE DATA REPORT
-built 2026-08-05T20:00:52+00:00
+built 2026-08-05T22:40:42+00:00
 counties found: ['Austin', 'Brazoria', 'Calhoun', 'Chambers', 'Colorado', 'Fort Bend', 'Galveston', 'Grimes', 'Harris', 'Jackson', 'Liberty', 'Matagorda', 'Montgomery', 'Polk', 'San Jacinto', 'Trinity', 'Walker', 'Waller', 'Washington', 'Wharton']
 counties missing: []
-counts: {"superfund": 25, "brownfields": 192, "superfund_in_bbox": 25, "brownfields_in_bbox": 220}
+counts: {"superfund": 25, "brownfields": 192, "tceq_vcp": 980, "tceq_bsa": 28, "superfund_in_bbox": 25, "brownfields_in_bbox": 220, "tceq_vcp_in_bbox": 1063, "tceq_bsa_in_bbox": 40}
 
 SERVICE DISCOVERY (candidates tried, layers seen)
   Superfund:
@@ -341,3 +341,123 @@ BROWNFIELDS VALUE COUNTS (fields with <=25 distinct values)
   fips_code: {"": 192}
   huc_code: {"": 192}
   dma_county: {"Harris": 140, "Wharton": 2, "Galveston": 37, "Polk": 2, "Montgomery": 2, "Jackson": 1, "Brazoria": 2, "Matagorda": 1, "Chambers": 1, "Austin": 4}
+
+======================================================================
+TCEQ FIELDS
+======================================================================
+  ADDR_DESC  ()  alias=''
+  CITY  ()  alias=''
+  COUNTY  ()  alias=''
+  HORZ_ACC  ()  alias=''
+  HORZ_DATE  ()  alias=''
+  HORZ_DATUM  ()  alias=''
+  HORZ_DESC  ()  alias=''
+  HORZ_METH  ()  alias=''
+  HORZ_ORG  ()  alias=''
+  HORZ_REF  ()  alias=''
+  LAT_DD  ()  alias=''
+  LONG_DD  ()  alias=''
+  OBJECTID  ()  alias=''
+  PHYS_ADDR  ()  alias=''
+  REGION  ()  alias=''
+  REM_PROG  ()  alias=''
+  RN  ()  alias=''
+  SITE_NAME  ()  alias=''
+  VCP_ID  ()  alias=''
+  ZIP_CODE  ()  alias=''
+  dma_county  ()  alias=''
+  tceq_program  ()  alias=''
+
+TCEQ SAMPLE RECORDS
+{
+  "OBJECTID": 1458610,
+  "REM_PROG": "Voluntary Cleanup Program (VCP)",
+  "RN": "RN100553189",
+  "VCP_ID": 1746,
+  "SITE_NAME": "VELSICOL CHEMICAL",
+  "PHYS_ADDR": "10201 BAY AREA BLVD",
+  "ADDR_DESC": "10201 Bay Area Blvd, Pasadena, TX",
+  "CITY": "PASADENA",
+  "COUNTY": "HARRIS",
+  "ZIP_CODE": "77507",
+  "REGION": "REGION 12 - HOUSTON",
+  "LAT_DD": 29.61013662,
+  "LONG_DD": -95.05460859,
+  "HORZ_METH": "ADDMAT_NUM",
+  "HORZ_ACC": -9999,
+  "HORZ_REF": "STRUC_CEN",
+  "HORZ_DATE": "20041013",
+  "HORZ_ORG": "TCEQ",
+  "HORZ_DATUM": "NAD83",
+  "HORZ_DESC": null,
+  "dma_county": "Harris",
+  "tceq_program": "vcp"
+}
+{
+  "OBJECTID": 1458612,
+  "REM_PROG": "Voluntary Cleanup Program (VCP)",
+  "RN": "RN101461135",
+  "VCP_ID": 330,
+  "SITE_NAME": "TATSUMI USA/TODD SHIPYARD FACI",
+  "PHYS_ADDR": null,
+  "ADDR_DESC": "PELICAN ISLAND SHIPYARD",
+  "CITY": "GALVESTON",
+  "COUNTY": "GALVESTON",
+  "ZIP_CODE": null,
+  "REGION": "REGION 12 - HOUSTON",
+  "LAT_DD": 29.31667,
+  "LONG_DD": -94.81667,
+  "HORZ_METH": "UNKNOWN",
+  "HORZ_ACC": -9999,
+  "HORZ_REF": "OTHER",
+  "HORZ_DATE": "19960827",
+  "HORZ_ORG": "TCEQ",
+  "HORZ_DATUM": "NAD83",
+  "HORZ_DESC": null,
+  "dma_county": "Galveston",
+  "tceq_program": "vcp"
+}
+{
+  "OBJECTID": 1458615,
+  "REM_PROG": "Voluntary Cleanup Program (VCP)",
+  "RN": "RN105021281",
+  "VCP_ID": 1954,
+  "SITE_NAME": "PASADENA COURTHOUSE ANNEX",
+  "PHYS_ADDR": "816 W PASADENA FWY",
+  "ADDR_DESC": null,
+  "CITY": "PASADENA",
+  "COUNTY": "HARRIS",
+  "ZIP_CODE": "77506",
+  "REGION": "REGION 12 - HOUSTON",
+  "LAT_DD": 29.71183591,
+  "LONG_DD": -95.21900446,
+  "HORZ_METH": "ADDMAT_NUM",
+  "HORZ_ACC": -9999,
+  "HORZ_REF": "OTHER",
+  "HORZ_DATE": "20060822",
+  "HORZ_ORG": "TCEQ",
+  "HORZ_DATUM": "NAD83",
+  "HORZ_DESC": null,
+  "dma_county": "Harris",
+  "tceq_program": "vcp"
+}
+
+TCEQ VALUE COUNTS (fields with <=25 distinct values)
+  REM_PROG: {"Voluntary Cleanup Program (VCP)": 980, "Brownfields Site Assessment (BSA)": 28}
+  COUNTY: {"HARRIS": 856, "GALVESTON": 39, "AUSTIN": 4, "LIBERTY": 7, "BRAZORIA": 28, "MONTGOMERY": 13, "MATAGORDA": 3, "FORT BEND": 28, "WHARTON": 6, "WALLER": 6, "CHAMBERS": 3, "CALHOUN": 2, "TRINITY": 2, "WASHINGTON": 2, "COLORADO": 3, "WALKER": 3, "GRIMES": 3}
+  REGION: {"REGION 12 - HOUSTON": 997, "REGION 14 - CORPUS CHRISTI": 2, "REGION 10 - BEAUMONT": 3, "REGION 09 - WACO": 5, "REGION 04 - DFW METROPLEX": 1}
+  HORZ_METH: {"ADDMAT_NUM": 564, "UNKNOWN": 53, "DOQ": 373, "GPS_DIFF": 1, "ADDMAT_INT": 8, "ADDMAT": 9}
+  HORZ_ACC: {"-9999": 639, "5": 369}
+  HORZ_REF: {"STRUC_CEN": 300, "OTHER": 419, "FAC_CEN": 281, "PST_TANK": 5, "FAC_ENTR": 1, "PST_PUMP": 2}
+  HORZ_ORG: {"TCEQ": 1008}
+  HORZ_DATUM: {"NAD83": 1008}
+  HORZ_DESC: {"None": 1004, "Houston Housing Authority": 1, "BBP Velasco North, LLC": 1, "Lead Products Company": 1, "Buffalo Bayou Partnership": 1}
+  dma_county: {"Harris": 852, "Galveston": 38, "Austin": 4, "Montgomery": 16, "Brazoria": 29, "Matagorda": 3, "Fort Bend": 30, "Liberty": 5, "Wharton": 6, "Waller": 6, "Chambers": 4, "Calhoun": 2, "Trinity": 2, "Washington": 2, "Colorado": 3, "Walker": 3, "Grimes": 3}
+  tceq_program: {"vcp": 980, "bsa": 28}
+
+======================================================================
+TCEQ CENTRAL REGISTRY LINK PROBE (rn=RN100553189)
+======================================================================
+  200  len=8040  rn_in_body=False  https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent.RNSearchResults&renumber=RN100553189
+  200  len=8040  rn_in_body=False  https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent.showoutlook&addn_id=RN100553189
+  200  len=55485  rn_in_body=False  https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent.RNSearch&renumber=RN100553189
