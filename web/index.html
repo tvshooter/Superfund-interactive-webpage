@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Contaminated Sites in the Houston TV Market — Superfund &amp; Brownfields</title>
-<meta name="description" content="An interactive map of EPA Superfund (National Priorities List) sites and brownfield properties across the 20 counties of the Houston television market.">
+<meta name="description" content="An interactive map of EPA Superfund (National Priorities List) sites, EPA brownfields and TCEQ state cleanup sites across the 20 counties of the Houston television market.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23ff5a3c'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%230f1419'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <style>
@@ -18,6 +18,8 @@
     --sf:#ff5a3c;
     --sf-deleted:#8b98a5;
     --bf:#3aa6ff;
+    --vcp:#4ade80;
+    --bsa:#b98cff;
     --accent:#ffc247;
   }
   *{box-sizing:border-box}
@@ -61,6 +63,8 @@
   .dot.sf{background:var(--sf)}
   .dot.sfd{background:transparent;border:2px solid var(--sf-deleted)}
   .dot.bf{background:var(--bf)}
+  .dot.vcp{background:var(--vcp)}
+  .dot.bsa{background:var(--bsa)}
   .toggle .count{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px}
 
   #resulthead{
@@ -102,6 +106,8 @@
   .pop .kind.sf{background:rgba(255,90,60,.16);color:#ff8f79}
   .pop .kind.sfd{background:rgba(139,152,165,.18);color:#b6c1cc}
   .pop .kind.bf{background:rgba(58,166,255,.16);color:#8fcbff}
+  .pop .kind.vcp{background:rgba(74,222,128,.16);color:#86efac}
+  .pop .kind.bsa{background:rgba(185,140,255,.18);color:#cdb1ff}
   .pop dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px}
   .pop dt{color:var(--muted);font-size:12px}
   .pop dd{margin:0;font-size:13px}
@@ -146,7 +152,7 @@
 <div id="app">
   <header>
     <h1>Contaminated Sites in the Houston TV Market</h1>
-    <span class="sub">EPA Superfund &amp; brownfield properties across the 20-county Houston DMA</span>
+    <span class="sub">Federal and state cleanup sites across the 20-county Houston DMA</span>
   </header>
 
   <div id="main">
@@ -171,8 +177,18 @@
           </label>
           <label class="toggle" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
             <input type="checkbox" id="t-bf" checked>
-            <span class="dot bf"></span> Brownfields
+            <span class="dot bf"></span> EPA brownfields
             <span class="count" id="c-bf">0</span>
+          </label>
+          <label class="toggle" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+            <input type="checkbox" id="t-bsa" checked>
+            <span class="dot bsa"></span> TCEQ brownfields
+            <span class="count" id="c-bsa">0</span>
+          </label>
+          <label class="toggle" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+            <input type="checkbox" id="t-vcp" checked>
+            <span class="dot vcp"></span> TCEQ voluntary cleanup
+            <span class="count" id="c-vcp">0</span>
           </label>
         </div>
       </div>
@@ -193,7 +209,8 @@
   </div>
 
   <footer>
-    Sources: EPA National Priorities List &amp; EPA Brownfields (ACRES), clipped to the
+    Sources: EPA National Priorities List, EPA Brownfields (ACRES) and TCEQ
+    voluntary cleanup &amp; brownfield site assessment programs, clipped to the
     Nielsen Houston DMA with U.S. Census county boundaries.
     <span id="built"></span>
   </footer>
@@ -218,7 +235,9 @@
   var STYLE = {
     sf:  { radius: 8, color: '#ff5a3c', fillColor: '#ff5a3c', weight: 1.5, fillOpacity: .8 },
     sfd: { radius: 7, color: '#8b98a5', fillColor: '#0f1419', weight: 2,   fillOpacity: .85 },
-    bf:  { radius: 5, color: '#3aa6ff', fillColor: '#3aa6ff', weight: 1,   fillOpacity: .7 }
+    bf:  { radius: 5, color: '#3aa6ff', fillColor: '#3aa6ff', weight: 1,   fillOpacity: .7 },
+    bsa: { radius: 5, color: '#b98cff', fillColor: '#b98cff', weight: 1,   fillOpacity: .7 },
+    vcp: { radius: 3.5, color: '#4ade80', fillColor: '#4ade80', weight: 1, fillOpacity: .6 }
   };
 
   var sites = [];        // normalized records
@@ -243,10 +262,17 @@
     var m = /href="([^"]+)"/i.exec(html);
     return m ? m[1] : null;
   }
+  // Source names arrive in ALL CAPS; title-case them but keep real acronyms.
+  var ACRONYMS = {};
+  ('USA US TX LP LLC LLP INC CO II III IV VI EPA TCEQ ISD MUD WWTP STP UST ' +
+   'PST NASA HISD JR SR NW NE SW SE US1 DOT AT&T').split(' ')
+    .forEach(function(a){ ACRONYMS[a] = true; });
   function titleCase(s){
-    return String(s || '').toLowerCase().replace(/\b[a-z]/g, function(c){
-      return c.toUpperCase();
-    });
+    return String(s || '').toLowerCase()
+      .replace(/\b[a-z]/g, function(c){ return c.toUpperCase(); })
+      .replace(/[A-Za-z&]+/g, function(w){
+        return ACRONYMS[w.toUpperCase()] ? w.toUpperCase() : w;
+      });
   }
   function fmtDate(s){ return s ? s : null; }
 
@@ -254,10 +280,11 @@
   Promise.all([
     fetch('data/superfund.geojson').then(function(r){ return r.json(); }),
     fetch('data/brownfields.geojson').then(function(r){ return r.json(); }),
+    fetch('data/tceq.geojson').then(function(r){ return r.json(); }),
     fetch('data/counties.geojson').then(function(r){ return r.json(); }),
     fetch('data/meta.json').then(function(r){ return r.json(); })
   ]).then(function(res){
-    var sf = res[0], bf = res[1], counties = res[2], meta = res[3];
+    var sf = res[0], bf = res[1], tceq = res[2], counties = res[3], meta = res[4];
 
     // county outlines
     var cl = L.geoJSON(counties, {
@@ -308,6 +335,29 @@
       });
     });
 
+    tceq.features.forEach(function(f){
+      var p = f.properties;
+      var isBsa = p.tceq_program === 'bsa';
+      sites.push({
+        kind: isBsa ? 'bsa' : 'vcp',
+        name: titleCase(p.SITE_NAME),
+        county: p.dma_county,
+        city: titleCase(p.CITY),
+        address: titleCase(p.PHYS_ADDR || p.ADDR_DESC),
+        zip: p.ZIP_CODE,
+        lon: f.geometry.coordinates[0],
+        lat: f.geometry.coordinates[1],
+        program: p.REM_PROG,
+        rn: p.RN,
+        tceqId: isBsa ? p.BSA_ID : p.VCP_ID,
+        profileUrl: isBsa
+          ? 'https://www.tceq.texas.gov/remediation/bsa'
+          : 'https://www.tceq.texas.gov/remediation/vcp/vcp.html',
+        search: [p.SITE_NAME, p.CITY, p.PHYS_ADDR, p.ADDR_DESC, p.dma_county,
+                 p.REM_PROG, p.RN].join(' ').toLowerCase()
+      });
+    });
+
     // county dropdown
     var sel = document.getElementById('county');
     (meta.counties || []).forEach(function(c){
@@ -327,6 +377,10 @@
       sites.filter(function(s){ return s.kind === 'sfd'; }).length;
     document.getElementById('c-bf').textContent =
       sites.filter(function(s){ return s.kind === 'bf'; }).length;
+    document.getElementById('c-bsa').textContent =
+      sites.filter(function(s){ return s.kind === 'bsa'; }).length;
+    document.getElementById('c-vcp').textContent =
+      sites.filter(function(s){ return s.kind === 'vcp'; }).length;
 
     render();
   }).catch(function(err){
@@ -339,8 +393,15 @@
 
   // ---- popup -------------------------------------------------------------
   function popupHtml(s){
-    var kindLabel = s.kind === 'bf' ? 'Brownfield property'
-                  : s.kind === 'sfd' ? 'Deleted from NPL' : 'Superfund — NPL site';
+    var LABELS = {
+      sf:  'Superfund — NPL site',
+      sfd: 'Deleted from NPL',
+      bf:  'EPA brownfield property',
+      bsa: 'TCEQ brownfield site assessment',
+      vcp: 'TCEQ voluntary cleanup'
+    };
+    var kindLabel = LABELS[s.kind];
+    var isTceq = s.kind === 'vcp' || s.kind === 'bsa';
     var h = '<div class="pop"><h3>' + esc(s.name) + '</h3>' +
             '<span class="kind ' + s.kind + '">' + kindLabel + '</span><dl>';
 
@@ -353,20 +414,26 @@
     row('City', s.city);
     row('County', s.county + ' County');
     if (s.zip) row('ZIP', s.zip);
-    if (s.kind !== 'bf') {
+    if (isTceq) {
+      row('Program', s.program);
+      row('TCEQ ID', s.tceqId);
+      row('Registry no.', s.rn);
+    } else if (s.kind === 'bf') {
+      row('ACRES ID', s.acresId);
+    } else {
       row('EPA ID', s.epaId);
       row('Hazard score', s.score);
       row('Proposed', s.proposed);
       row('Listed on NPL', s.listed);
       row('Construction complete', s.constructionDone);
       row('Deleted from NPL', s.deletedDate);
-    } else {
-      row('ACRES ID', s.acresId);
     }
     h += '</dl><div class="links">';
     if (s.profileUrl) {
       h += '<a href="' + esc(s.profileUrl) + '" target="_blank" rel="noopener">' +
-           (s.kind === 'bf' ? 'EPA property record &rarr;' : 'EPA site profile &rarr;') + '</a>';
+           (isTceq ? 'About this TCEQ program &rarr;'
+                   : s.kind === 'bf' ? 'EPA property record &rarr;'
+                                     : 'EPA site profile &rarr;') + '</a>';
     }
     if (s.narrativeUrl) {
       h += '<a href="' + esc(s.narrativeUrl) + '" target="_blank" rel="noopener">' +
@@ -387,7 +454,9 @@
       county: document.getElementById('county').value,
       sf: document.getElementById('t-sf').checked,
       sfd: document.getElementById('t-sfd').checked,
-      bf: document.getElementById('t-bf').checked
+      bf: document.getElementById('t-bf').checked,
+      bsa: document.getElementById('t-bsa').checked,
+      vcp: document.getElementById('t-vcp').checked
     };
   }
 
@@ -405,10 +474,11 @@
     markerLayer.clearLayers();
     markerFor = {};
 
-    // brownfields first so Superfund markers sit on top
+    // densest layers first so the rarer Superfund markers sit on top
+    var DRAW = { vcp: 0, bsa: 1, bf: 2, sfd: 3, sf: 4 };
     shown.slice().sort(function(a, b){
-      return (a.kind === 'bf' ? 0 : 1) - (b.kind === 'bf' ? 0 : 1);
-    }).forEach(function(s, i){
+      return DRAW[a.kind] - DRAW[b.kind];
+    }).forEach(function(s){
       var m = L.circleMarker([s.lat, s.lon], STYLE[s.kind])
                .bindPopup(popupHtml(s), { maxWidth: 320 });
       m.addTo(markerLayer);
@@ -421,7 +491,7 @@
     shown.slice()
       .sort(function(a, b){
         if (a.kind !== b.kind) {
-          var rank = { sf: 0, sfd: 1, bf: 2 };
+          var rank = { sf: 0, sfd: 1, bf: 2, bsa: 3, vcp: 4 };
           return rank[a.kind] - rank[b.kind];
         }
         return a.name.localeCompare(b.name);
@@ -454,7 +524,7 @@
     emptyEl.style.display = shown.length ? 'none' : 'block';
   }
 
-  ['q', 'county', 't-sf', 't-sfd', 't-bf'].forEach(function(id){
+  ['q', 'county', 't-sf', 't-sfd', 't-bf', 't-bsa', 't-vcp'].forEach(function(id){
     var el = document.getElementById(id);
     el.addEventListener(el.tagName === 'INPUT' && el.type === 'search' ? 'input' : 'change',
                         render);
@@ -466,6 +536,8 @@
     document.getElementById('t-sf').checked = true;
     document.getElementById('t-sfd').checked = true;
     document.getElementById('t-bf').checked = true;
+    document.getElementById('t-bsa').checked = true;
+    document.getElementById('t-vcp').checked = true;
     render();
     fitAll();
   });
@@ -473,10 +545,15 @@
   document.getElementById('csv').addEventListener('click', function(){
     var f = currentFilters();
     var rows = sites.filter(function(s){ return matches(s, f); });
+    var CATEGORY = {
+      sf: 'Superfund NPL', sfd: 'Superfund NPL (deleted)',
+      bf: 'EPA brownfield', bsa: 'TCEQ brownfield site assessment',
+      vcp: 'TCEQ voluntary cleanup'
+    };
     var cols = ['category','name','address','city','county','zip','latitude',
-                'longitude','status','epa_id','acres_id','hazard_score',
-                'proposed','listed_on_npl','construction_complete',
-                'deleted_from_npl','epa_link'];
+                'longitude','status','epa_id','acres_id','tceq_id',
+                'tceq_registry_no','hazard_score','proposed','listed_on_npl',
+                'construction_complete','deleted_from_npl','link'];
     function cell(v){
       if (v === null || v === undefined) return '';
       var s = String(v);
@@ -485,9 +562,10 @@
     var lines = [cols.join(',')];
     rows.forEach(function(s){
       lines.push([
-        s.kind === 'bf' ? 'Brownfield' : 'Superfund NPL',
+        CATEGORY[s.kind],
         s.name, s.address || '', s.city, s.county, s.zip || '', s.lat, s.lon,
-        s.status || '', s.epaId || '', s.acresId || '', s.score || '',
+        s.status || s.program || '', s.epaId || '', s.acresId || '',
+        s.tceqId || '', s.rn || '', s.score || '',
         s.proposed || '', s.listed || '', s.constructionDone || '',
         s.deletedDate || '', s.profileUrl || ''
       ].map(cell).join(','));
@@ -527,7 +605,9 @@
     d.innerHTML =
       '<div class="row"><span class="dot sf"></span> Superfund (NPL)</div>' +
       '<div class="row"><span class="dot sfd"></span> Deleted from NPL</div>' +
-      '<div class="row"><span class="dot bf"></span> Brownfield property</div>';
+      '<div class="row"><span class="dot bf"></span> EPA brownfield</div>' +
+      '<div class="row"><span class="dot bsa"></span> TCEQ brownfield</div>' +
+      '<div class="row"><span class="dot vcp"></span> TCEQ voluntary cleanup</div>';
     return d;
   };
   legend.addTo(map);
