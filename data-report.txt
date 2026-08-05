@@ -1,0 +1,238 @@
+HOUSTON DMA SITE DATA REPORT
+built 2026-08-05T16:22:52+00:00
+counties found: ['Austin', 'Brazoria', 'Calhoun', 'Chambers', 'Colorado', 'Fort Bend', 'Galveston', 'Grimes', 'Harris', 'Jackson', 'Liberty', 'Matagorda', 'Montgomery', 'Polk', 'San Jacinto', 'Trinity', 'Walker', 'Waller', 'Washington', 'Wharton']
+counties missing: []
+counts: {"superfund": 25, "brownfields": 0, "superfund_in_bbox": 25, "brownfields_in_bbox": 15}
+
+======================================================================
+SUPERFUND FIELDS
+======================================================================
+  OBJECTID  (esriFieldTypeInteger)  alias='OBJECTID'
+  Site_Name  (esriFieldTypeString)  alias='Site_Name'
+  Site_Score  (esriFieldTypeDouble)  alias='Site_Score'
+  Site_EPA_ID  (esriFieldTypeString)  alias='Site_EPA_ID'
+  SEMS_ID  (esriFieldTypeInteger)  alias='SEMS_ID'
+  SITS_ID  (esriFieldTypeInteger)  alias='SITS_ID'
+  Region_ID  (esriFieldTypeInteger)  alias='Region_ID'
+  State  (esriFieldTypeString)  alias='State'
+  City  (esriFieldTypeString)  alias='City'
+  County  (esriFieldTypeString)  alias='County'
+  Status  (esriFieldTypeString)  alias='Status'
+  Longitude  (esriFieldTypeDouble)  alias='Longitude'
+  Latitude  (esriFieldTypeDouble)  alias='Latitude'
+  Proposed_Date  (esriFieldTypeString)  alias='Proposed_Date'
+  Listing_Date  (esriFieldTypeString)  alias='Listing_Date'
+  Construction_Completion_Date  (esriFieldTypeString)  alias='Construction_Completion_Date'
+  Construction_Completion_Number  (esriFieldTypeInteger)  alias='Construction_Completion_Number'
+  NOID_Date  (esriFieldTypeString)  alias='NOID_Date'
+  Deletion_Date  (esriFieldTypeString)  alias='Deletion_Date'
+  Site_Listing_Narrative  (esriFieldTypeString)  alias='Site_Listing_Narrative'
+  Site_Progress_Profile  (esriFieldTypeString)  alias='Site_Progress_Profile'
+  Notice_of_Data_Availability  (esriFieldTypeString)  alias='Notice_of_Data_Availability'
+  Proposed_FR_Notice  (esriFieldTypeString)  alias='Proposed_FR_Notice'
+  Deletion_FR_Notice  (esriFieldTypeString)  alias='Deletion_FR_Notice'
+  Final_FR_Notice  (esriFieldTypeString)  alias='Final_FR_Notice'
+  NOID_FR_Notice  (esriFieldTypeString)  alias='NOID_FR_Notice'
+  Restoration_FR_Notice_Jumper_Page  (esriFieldTypeString)  alias='Restoration_FR_Notice_Jumper_Page'
+  Site_has_had_a_Partial_Deletion  (esriFieldTypeString)  alias='Site_has_had_a_Partial_Deletion'
+  CreationDate  (esriFieldTypeDate)  alias='CreationDate'
+  Creator  (esriFieldTypeString)  alias='Creator'
+  EditDate  (esriFieldTypeDate)  alias='EditDate'
+  Editor  (esriFieldTypeString)  alias='Editor'
+  ObjectId2  (esriFieldTypeOID)  alias='ObjectId2'
+
+SUPERFUND SAMPLE RECORDS
+{
+  "OBJECTID": null,
+  "Site_Name": "Crystal Chemical Co.",
+  "Site_Score": 60.9,
+  "Site_EPA_ID": "TXD990707010",
+  "SEMS_ID": 603555,
+  "SITS_ID": 777,
+  "Region_ID": 6,
+  "State": "Texas",
+  "City": "Houston",
+  "County": "Harris",
+  "Status": "NPL Site",
+  "Longitude": -95.5644,
+  "Latitude": 29.7206,
+  "Proposed_Date": "12/30/1982",
+  "Listing_Date": "09/08/1983",
+  "Construction_Completion_Date": "10/02/2003",
+  "Construction_Completion_Number": 887,
+  "NOID_Date": null,
+  "Deletion_Date": null,
+  "Site_Listing_Narrative": "<a href=\"https://semspub.epa.gov/src/document/06/300361\" target=\"_blank\">TXD990707010 (PDF)</a>",
+  "Site_Progress_Profile": "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0603555\" target=\"_blank\">Crystal Chemical Co.</a>",
+  "Notice_of_Data_Availability": null,
+  "Proposed_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189619\" target=\"_blank\">12/30/1982 (PDF)</a>",
+  "Deletion_FR_Notice": null,
+  "Final_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189620\" target=\"_blank\">09/08/1983 (PDF)</a>",
+  "NOID_FR_Notice": null,
+  "Restoration_FR_Notice_Jumper_Page": null,
+  "Site_has_had_a_Partial_Deletion": "No",
+  "CreationDate": null,
+  "Creator": null,
+  "EditDate": null,
+  "Editor": null,
+  "ObjectId2": 1462,
+  "dma_county": "Harris"
+}
+{
+  "OBJECTID": null,
+  "Site_Name": "French, Ltd.",
+  "Site_Score": 63.33,
+  "Site_EPA_ID": "TXD980514814",
+  "SEMS_ID": 602498,
+  "SITS_ID": 778,
+  "Region_ID": 6,
+  "State": "Texas",
+  "City": "Crosby",
+  "County": "Harris",
+  "Status": "NPL Site",
+  "Longitude": -95.0739,
+  "Latitude": 29.8796,
+  "Proposed_Date": "12/30/1982",
+  "Listing_Date": "09/08/1983",
+  "Construction_Completion_Date": "09/26/1994",
+  "Construction_Completion_Number": 267,
+  "NOID_Date": null,
+  "Deletion_Date": null,
+  "Site_Listing_Narrative": "<a href=\"https://semspub.epa.gov/src/document/06/300362\" target=\"_blank\">TXD980514814 (PDF)</a>",
+  "Site_Progress_Profile": "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602498\" target=\"_blank\">French, Ltd.</a>",
+  "Notice_of_Data_Availability": null,
+  "Proposed_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189619\" target=\"_blank\">12/30/1982 (PDF)</a>",
+  "Deletion_FR_Notice": null,
+  "Final_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189620\" target=\"_blank\">09/08/1983 (PDF)</a>",
+  "NOID_FR_Notice": null,
+  "Restoration_FR_Notice_Jumper_Page": null,
+  "Site_has_had_a_Partial_Deletion": "No",
+  "CreationDate": null,
+  "Creator": null,
+  "EditDate": null,
+  "Editor": null,
+  "ObjectId2": 1463,
+  "dma_county": "Harris"
+}
+{
+  "OBJECTID": null,
+  "Site_Name": "Harris (Farley Street)",
+  "Site_Score": 33.94,
+  "Site_EPA_ID": "TXD980745582",
+  "SEMS_ID": 602804,
+  "SITS_ID": 779,
+  "Region_ID": 6,
+  "State": "Texas",
+  "City": "Houston",
+  "County": "Harris",
+  "Status": "Deleted NPL Site",
+  "Longitude": -95.1627,
+  "Latitude": 29.6244,
+  "Proposed_Date": "12/30/1982",
+  "Listing_Date": "09/08/1983",
+  "Construction_Completion_Date": "04/18/1988",
+  "Construction_Completion_Number": 26,
+  "NOID_Date": "09/03/1987",
+  "Deletion_Date": "04/18/1988",
+  "Site_Listing_Narrative": "<a href=\"https://semspub.epa.gov/src/document/06/300363\" target=\"_blank\">TXD980745582 (PDF)</a>",
+  "Site_Progress_Profile": "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602804\" target=\"_blank\">Harris (Farley Street)</a>",
+  "Notice_of_Data_Availability": null,
+  "Proposed_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189619\" target=\"_blank\">12/30/1982 (PDF)</a>",
+  "Deletion_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189622\" target=\"_blank\">04/18/1988 (PDF)</a>",
+  "Final_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/11/189620\" target=\"_blank\">09/08/1983 (PDF)</a>",
+  "NOID_FR_Notice": "<a href=\"https://semspub.epa.gov/src/document/06/300085\" target=\"_blank\">09/03/1987 (PDF)</a>",
+  "Restoration_FR_Notice_Jumper_Page": null,
+  "Site_has_had_a_Partial_Deletion": "No",
+  "CreationDate": null,
+  "Creator": null,
+  "EditDate": null,
+  "Editor": null,
+  "ObjectId2": 1464,
+  "dma_county": "Harris"
+}
+
+SUPERFUND VALUE COUNTS (fields with <=25 distinct values)
+  OBJECTID: {"None": 25}
+  Site_Name: {"Crystal Chemical Co.": 1, "French, Ltd.": 1, "Harris (Farley Street)": 1, "Highlands Acid Pit": 1, "Motco, Inc.": 1, "Sikes Disposal Pits": 1, "United Creosoting Co.": 1, "Geneva Industries/Fuhrmann Energy": 1, "Brio Refining, Inc.": 1, "Sol Lynn/Industrial Transformers": 1, "Petro-Chemical Systems, Inc. (Turtle Bayou)": 1, "North Cavalcade Street": 1, "South Cavalcade Street": 1, "Sheridan Disposal Services": 1, "Dixie Oil Processors, Inc.": 1, "ALCOA (Point Comfort)/Lavaca Bay": 1, "Tex-Tin Corp.": 1, "Many Diversified Interests, Inc.": 1, "Malone Service Company, Inc.": 1, "Patrick Bayou": 1, "Gulfco Marine Maintenance": 1, "Jones Road Ground Water Plume": 1, "Conroe Creosoting Company": 1, "San Jacinto River Waste Pits": 1, "US Oil Recovery": 1}
+  Site_Score: {"60.9": 1, "63.33": 1, "33.94": 1, "37.77": 1, "0": 1, "61.62": 1, "37.29": 1, "59.46": 1, "50.38": 1, "39.65": 1, "29.94": 1, "37.08": 1, "38.69": 1, "30.16": 1, "34.21": 1, "50": 6, "32.07": 1, "47.83": 1, "46.5": 1, "48": 1}
+  Site_EPA_ID: {"TXD990707010": 1, "TXD980514814": 1, "TXD980745582": 1, "TXD980514996": 1, "TXD980629851": 1, "TXD980513956": 1, "TXD980745574": 1, "TXD980748453": 1, "TXD980625453": 1, "TXD980873327": 1, "TXD980873350": 1, "TXD980873343": 1, "TXD980810386": 1, "TXD062132147": 1, "TXD089793046": 1, "TXD008123168": 1, "TXD062113329": 1, "TXD008083404": 1, "TXD980864789": 1, "TX0000605329": 1, "TXD055144539": 1, "TXN000605460": 1, "TXD008091951": 1, "TXN000606611": 1, "TXN000607093": 1}
+  SEMS_ID: {"603555": 1, "602498": 1, "602804": 1, "602505": 1, "602673": 1, "602488": 1, "602803": 1, "602809": 1, "602601": 1, "602954": 1, "602957": 1, "602956": 1, "602895": 1, "602108": 1, "600006": 1, "601752": 1, "602105": 1, "605008": 1, "602922": 1, "605329": 1, "602027": 1, "605460": 1, "601732": 1, "606611": 1, "607093": 1}
+  SITS_ID: {"777": 1, "778": 1, "779": 1, "780": 1, "781": 1, "783": 1, "785": 1, "787": 1, "792": 1, "795": 1, "797": 1, "798": 1, "799": 1, "803": 1, "804": 1, "1400": 1, "1478": 1, "1533": 1, "1611": 1, "1638": 1, "1663": 1, "1678": 1, "1682": 1, "1773": 1, "1854": 1}
+  Region_ID: {"6": 25}
+  State: {"Texas": 25}
+  City: {"Houston": 8, "Crosby": 2, "Highlands": 1, "La Marque": 1, "Conroe": 2, "Friendswood": 2, "Liberty County": 1, "Hempstead": 1, "Point Comfort": 1, "Texas City": 2, "Deer Park": 1, "Freeport": 1, "Channelview": 1, "Pasadena": 1}
+  County: {"Harris": 16, "Galveston": 3, "Montgomery": 2, "Liberty": 1, "Waller": 1, "Calhoun": 1, "Brazoria": 1}
+  Status: {"NPL Site": 22, "Deleted NPL Site": 3}
+  Longitude: {"-95.5644": 1, "-95.0739": 1, "-95.1627": 1, "-95.0786": 1, "-94.933331": 1, "-95.086669": 1, "-95.456669": 1, "-95.25": 1, "-95.203331": 1, "-95.398611": 1, "-94.688061": 1, "-95.349169": 1, "-95.347781": 1, "-96.1357": 1, "-95.2047": 1, "-96.562222": 1, "-94.941667": 1, "-95.331667": 1, "-94.902778": 1, "-95.114583": 1, "-95.289656": 1, "-95.584319": 1, "-95.435428": 1, "-95.0625": 1, "-95.221528": 1}
+  Latitude: {"29.7206": 1, "29.8796": 1, "29.6244": 1, "29.8141": 1, "29.334719": 1, "29.881669": 1, "30.331669": 1, "29.66": 1, "29.57": 1, "29.678889": 1, "29.92": 1, "29.806669": 1, "29.798331": 1, "30.2074": 1, "29.5686": 1, "28.650833": 1, "29.356667": 1, "29.767778": 1, "29.333056": 1, "29.731944": 1, "28.966847": 1, "29.90465": 1, "30.318744": 1, "29.7944": 1, "29.718389": 1}
+  Proposed_Date: {"12/30/1982": 6, "09/08/1983": 2, "10/15/1984": 5, "06/10/1986": 1, "06/24/1988": 1, "06/23/1993": 1, "06/17/1996": 1, "09/29/1998": 1, "08/24/2000": 1, "06/14/2001": 1, "09/05/2002": 1, "04/30/2003": 2, "09/19/2007": 1, "09/16/2011": 1}
+  Listing_Date: {"09/08/1983": 6, "09/21/1984": 2, "03/31/1989": 3, "06/10/1986": 3, "10/04/1989": 1, "02/23/1994": 1, "09/18/1998": 1, "01/19/1999": 1, "06/14/2001": 1, "09/05/2002": 1, "04/30/2003": 1, "09/29/2003": 2, "03/19/2008": 1, "09/18/2012": 1}
+  Construction_Completion_Date: {"10/02/2003": 1, "09/26/1994": 1, "04/18/1988": 1, "06/29/1992": 1, "09/30/1997": 1, "01/30/1995": 1, "09/30/1999": 1, "09/14/1993": 1, "04/28/2004": 1, "09/29/1993": 1, "09/30/2010": 1, "08/31/2011": 1, "09/15/2000": 1, "05/01/2006": 1, "06/09/1993": 1, "07/23/2007": 1, "09/20/2004": 1, "08/31/2009": 1, "06/29/2018": 1, "None": 4, "09/29/2011": 1, "09/30/2003": 1}
+  Construction_Completion_Number: {"887": 1, "267": 1, "26": 1, "95": 1, "483": 1, "288": 1, "670": 1, "191": 1, "897": 1, "213": 1, "1097": 1, "1103": 1, "708": 1, "971": 1, "168": 1, "1013": 1, "912": 1, "1069": 1, "1200": 1, "0": 4, "1119": 1, "880": 1}
+  NOID_Date: {"None": 22, "09/03/1987": 1, "06/23/2006": 1, "06/22/2006": 1}
+  Deletion_Date: {"None": 22, "04/18/1988": 1, "12/28/2006": 1, "08/21/2006": 1}
+  Site_Listing_Narrative: {"<a href=\"https://semspub.epa.gov/src/document/06/300361\" target=\"_blank\">TXD990707010 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300362\" target=\"_blank\">TXD980514814 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300363\" target=\"_blank\">TXD980745582 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300364\" target=\"_blank\">TXD980514996 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300365\" target=\"_blank\">TXD980629851 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300367\" target=\"_blank\">TXD980513956 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300369\" target=\"_blank\">TXD980745574 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300370\" target=\"_blank\">TXD980748453 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300375\" target=\"_blank\">TXD980625453 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300378\" target=\"_blank\">TXD980873327 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300380\" target=\"_blank\">TXD980873350 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300381\" target=\"_blank\">TXD980873343 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300382\" target=\"_blank\">TXD980810386 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300386\" target=\"_blank\">TXD062132147 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300387\" target=\"_blank\">TXD089793046 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300283\" target=\"_blank\">TXD008123168 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300290\" target=\"_blank\">TXD062113329 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300298\" target=\"_blank\">TXD008083404 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300314\" target=\"_blank\">TXD980864789 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300317\" target=\"_blank\">TX0000605329 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300320\" target=\"_blank\">TXD055144539 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300321\" target=\"_blank\">TXN000605460 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300322\" target=\"_blank\">TXD008091951 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300055\" target=\"_blank\">TXN000606611 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300061\" target=\"_blank\">TXN000607093 (PDF)</a>": 1}
+  Site_Progress_Profile: {"<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0603555\" target=\"_blank\">Crystal Chemical Co.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602498\" target=\"_blank\">French, Ltd.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602804\" target=\"_blank\">Harris (Farley Street)</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602505\" target=\"_blank\">Highlands Acid Pit</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602673\" target=\"_blank\">Motco, Inc.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602488\" target=\"_blank\">Sikes Disposal Pits</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602803\" target=\"_blank\">United Creosoting Co.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602809\" target=\"_blank\">Geneva Industries/Fuhrmann Energy</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602601\" target=\"_blank\">Brio Refining, Inc.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602954\" target=\"_blank\">Sol Lynn/Industrial Transformers</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602957\" target=\"_blank\">Petro-Chemical Systems, Inc. (Turtle Bayou)</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602956\" target=\"_blank\">North Cavalcade Street</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602895\" target=\"_blank\">South Cavalcade Street</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602108\" target=\"_blank\">Sheridan Disposal Services</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0600006\" target=\"_blank\">Dixie Oil Processors, Inc.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0601752\" target=\"_blank\">ALCOA (Point Comfort)/Lavaca Bay</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602105\" target=\"_blank\">Tex-Tin Corp.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0605008\" target=\"_blank\">Many Diversified Interests, Inc.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602922\" target=\"_blank\">Malone Service Company, Inc.</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0605329\" target=\"_blank\">Patrick Bayou</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602027\" target=\"_blank\">Gulfco Marine Maintenance</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0605460\" target=\"_blank\">Jones Road Ground Water Plume</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0601732\" target=\"_blank\">Conroe Creosoting Company</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0606611\" target=\"_blank\">San Jacinto River Waste Pits</a>": 1, "<a href=\"https://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0607093\" target=\"_blank\">US Oil Recovery</a>": 1}
+  Notice_of_Data_Availability: {"None": 25}
+  Proposed_FR_Notice: {"<a href=\"https://semspub.epa.gov/src/document/11/189619\" target=\"_blank\">12/30/1982 (PDF)</a>": 6, "<a href=\"https://semspub.epa.gov/src/document/11/189640\" target=\"_blank\">09/08/1983 (PDF)</a>": 2, "<a href=\"https://semspub.epa.gov/src/document/11/189641\" target=\"_blank\">10/15/1984 (PDF)</a>": 5, "<a href=\"https://semspub.epa.gov/src/document/11/189644\" target=\"_blank\">06/10/1986 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/11/189648\" target=\"_blank\">06/24/1988 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/11/189656\" target=\"_blank\">06/23/1993 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-1996-06-17/pdf/96-15033.pdf\" target=\"_blank\">06/17/1996 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-1998-09-29/pdf/98-25890.pdf\" target=\"_blank\">09/29/1998 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2000-08-24/pdf/00-21524.pdf\" target=\"_blank\">08/24/2000 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2001-06-14/pdf/01-14617.pdf\" target=\"_blank\">06/14/2001 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2002-09-05/pdf/02-22539.pdf\" target=\"_blank\">09/05/2002 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2003-04-30/pdf/03-10649.pdf\" target=\"_blank\">04/30/2003 (PDF)</a>": 2, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2007-09-19/pdf/E7-18154.pdf\" target=\"_blank\">09/19/2007 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2011-09-16/pdf/2011-23651.pdf\" target=\"_blank\">09/16/2011 (PDF)</a>": 1}
+  Deletion_FR_Notice: {"None": 22, "<a href=\"https://semspub.epa.gov/src/document/11/189622\" target=\"_blank\">04/18/1988 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2006-12-28/pdf/E6-22298.pdf\" target=\"_blank\">12/28/2006 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2006-06-22/pdf/E6-9748.pdf\" target=\"_blank\">08/21/2006 (PDF)</a>": 1}
+  Final_FR_Notice: {"<a href=\"https://semspub.epa.gov/src/document/11/189620\" target=\"_blank\">09/08/1983 (PDF)</a>": 6, "<a href=\"https://semspub.epa.gov/src/document/11/189627\" target=\"_blank\">09/21/1984 (PDF)</a>": 2, "<a href=\"https://semspub.epa.gov/src/document/11/189631\" target=\"_blank\">03/31/1989 (PDF)</a>": 3, "<a href=\"https://semspub.epa.gov/src/document/11/189628\" target=\"_blank\">06/10/1986 (PDF)</a>": 3, "<a href=\"https://semspub.epa.gov/src/document/11/189633\" target=\"_blank\">10/04/1989 (PDF)</a>": 1, "<a href=\"https://semspub.epa.gov/src/document/06/300397\" target=\"_blank\">02/23/1994 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-1998-09-18/pdf/98-25087.pdf\" target=\"_blank\">09/18/1998 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-1999-01-19/pdf/99-1020.pdf\" target=\"_blank\">01/19/1999 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2001-06-14/pdf/01-14616.pdf\" target=\"_blank\">06/14/2001 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2002-09-05/pdf/02-22538.pdf\" target=\"_blank\">09/05/2002 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2003-04-30/pdf/03-10648.pdf\" target=\"_blank\">04/30/2003 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2003-09-29/pdf/03-24406.pdf\" target=\"_blank\">09/29/2003 (PDF)</a>": 2, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2008-03-19/pdf/E8-5557.pdf\" target=\"_blank\">03/19/2008 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2012-09-18/pdf/2012-22851.pdf\" target=\"_blank\">09/18/2012 (PDF)</a>": 1}
+  NOID_FR_Notice: {"None": 22, "<a href=\"https://semspub.epa.gov/src/document/06/300085\" target=\"_blank\">09/03/1987 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2006-06-23/pdf/06-5569.pdf\" target=\"_blank\">06/23/2006 (PDF)</a>": 1, "<a href=\"http://www.gpo.gov/fdsys/pkg/FR-2006-06-22/pdf/E6-9747.pdf\" target=\"_blank\">06/22/2006 (PDF)</a>": 1}
+  Restoration_FR_Notice_Jumper_Page: {"None": 25}
+  Site_has_had_a_Partial_Deletion: {"No": 22, "<a href=\"https://www.epa.gov/superfund/partially-deleted-national-priorities-list-npl-sites-site-name\" target=\"_blank\">Yes</a>": 3}
+  CreationDate: {"None": 25}
+  Creator: {"None": 25}
+  EditDate: {"None": 25}
+  Editor: {"None": 25}
+  ObjectId2: {"1462": 1, "1463": 1, "1464": 1, "1465": 1, "1466": 1, "1479": 1, "1481": 1, "1482": 1, "1487": 1, "1490": 1, "1506": 1, "1507": 1, "1508": 1, "1512": 1, "1513": 1, "1516": 1, "1538": 1, "1630": 1, "1636": 1, "1638": 1, "1640": 1, "1652": 1, "1653": 1, "1660": 1, "1698": 1}
+  dma_county: {"Harris": 16, "Galveston": 3, "Montgomery": 2, "Liberty": 1, "Waller": 1, "Calhoun": 1, "Brazoria": 1}
+
+======================================================================
+BROWNFIELDS FIELDS
+======================================================================
+  OBJECTID  (esriFieldTypeOID)  alias='OBJECTID'
+  JURISDICTION_ID  (esriFieldTypeInteger)  alias='JURISDICTION_ID'
+  JURISDICTION_TYPE  (esriFieldTypeString)  alias='JURISDICTION_TYPE'
+  JOB_G  (esriFieldTypeString)  alias='JOB_G'
+  JOB_P  (esriFieldTypeString)  alias='JOB_P'
+  ASSESS_G  (esriFieldTypeString)  alias='ASSESS_G'
+  ASSESS_P  (esriFieldTypeString)  alias='ASSESS_P'
+  CLEANUP_G  (esriFieldTypeString)  alias='CLEANUP_G'
+  RLF_G  (esriFieldTypeString)  alias='RLF_G'
+  RLF_P  (esriFieldTypeString)  alias='RLF_P'
+  ST_TRIBE_G  (esriFieldTypeString)  alias='ST_TRIBE_G'
+  JURISDICTION_NAME  (esriFieldTypeString)  alias='JURISDICTION_NAME'
+  MAP_ORDER  (esriFieldTypeSmallInteger)  alias='MAP_ORDER'
+  MAP_CODE  (esriFieldTypeString)  alias='MAP_CODE'
+  NUMPOLYS  (esriFieldTypeDouble)  alias='NUMPOLYS'
+  VE_CENTER  (esriFieldTypeString)  alias='VE_CENTER'
+  VE_BB  (esriFieldTypeString)  alias='VE_BB'
+  VE_DESC  (esriFieldTypeString)  alias='VE_DESC'
+  TBA_G  (esriFieldTypeString)  alias='TBA_G'
+  MP_G  (esriFieldTypeString)  alias='MP_G'
+  VE_JTGRANTS  (esriFieldTypeString)  alias='VE_JTGRANTS'
+  VE_JTPILOTS  (esriFieldTypeString)  alias='VE_JTPILOTS'
+  VE_ASSESSGRANTS  (esriFieldTypeString)  alias='VE_ASSESSGRANTS'
+  VE_ASSESSPILOTS  (esriFieldTypeString)  alias='VE_ASSESSPILOTS'
+  VE_CLEANUPGRANTS  (esriFieldTypeString)  alias='VE_CLEANUPGRANTS'
+  VE_RLFGRANTS  (esriFieldTypeString)  alias='VE_RLFGRANTS'
+  VE_128AGRANTS  (esriFieldTypeString)  alias='VE_128AGRANTS'
+  VE_TBAGRANTS  (esriFieldTypeString)  alias='VE_TBAGRANTS'
+  VE_MPGRANTS  (esriFieldTypeString)  alias='VE_MPGRANTS'
+  VE_RLFPILOTS  (esriFieldTypeString)  alias='VE_RLFPILOTS'
+  STATE_CODE  (esriFieldTypeString)  alias='STATE_CODE'
+  COUNTY  (esriFieldTypeString)  alias='COUNTY'
+  AWP_G  (esriFieldTypeString)  alias='AWP_G'
+  VE_AWPGRANTS  (esriFieldTypeString)  alias='VE_AWPGRANTS'
+  VE_128APGRANTS  (esriFieldTypeString)  alias='VE_128APGRANTS'
+  ST_TRIBE_P  (esriFieldTypeString)  alias='ST_TRIBE_P'
+  SHOWCASE  (esriFieldTypeString)  alias='SHOWCASE'
+  VE_SHOWCASE  (esriFieldTypeString)  alias='VE_SHOWCASE'
+  CONGRESSIONAL_DIST  (esriFieldTypeString)  alias='CONGRESSIONAL_DIST'
+  SHAPE_WKT  (esriFieldTypeString)  alias='SHAPE_WKT'
+  Shape__Area  (esriFieldTypeDouble)  alias='Shape__Area'
+  Shape__Length  (esriFieldTypeDouble)  alias='Shape__Length'
+
+BROWNFIELDS SAMPLE RECORDS
+
+BROWNFIELDS VALUE COUNTS (fields with <=25 distinct values)
