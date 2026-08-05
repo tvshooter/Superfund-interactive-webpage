@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contaminated Sites in the Houston TV Market — Superfund &amp; Brownfields</title>
+<meta name="description" content="An interactive map of EPA Superfund (National Priorities List) sites and brownfield properties across the 20 counties of the Houston television market.">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+  :root{
+    --bg:#0f1419;
+    --panel:#171d24;
+    --panel-2:#1e262f;
+    --line:#2b3742;
+    --text:#e8edf2;
+    --muted:#93a1b0;
+    --sf:#ff5a3c;
+    --sf-deleted:#8b98a5;
+    --bf:#3aa6ff;
+    --accent:#ffc247;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--text);
+  }
+  #app{display:flex;flex-direction:column;height:100%}
+
+  header{
+    padding:14px 20px;background:var(--panel);border-bottom:1px solid var(--line);
+    display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;flex:0 0 auto;
+  }
+  header h1{margin:0;font-size:19px;letter-spacing:-.01em}
+  header .sub{color:var(--muted);font-size:13px}
+
+  #main{flex:1 1 auto;display:flex;min-height:0}
+
+  #sidebar{
+    width:360px;flex:0 0 360px;background:var(--panel);border-right:1px solid var(--line);
+    display:flex;flex-direction:column;min-height:0;
+  }
+  #controls{padding:14px;border-bottom:1px solid var(--line);flex:0 0 auto}
+  #controls label{display:block;font-size:12px;text-transform:uppercase;
+    letter-spacing:.06em;color:var(--muted);margin:12px 0 5px}
+  #controls label:first-child{margin-top:0}
+  input[type=search],select{
+    width:100%;padding:8px 10px;border-radius:7px;border:1px solid var(--line);
+    background:var(--panel-2);color:var(--text);font-size:14px;
+  }
+  input[type=search]:focus,select:focus{outline:2px solid var(--accent);outline-offset:0}
+
+  .toggles{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .toggle{
+    display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;
+    background:var(--panel-2);border:1px solid var(--line);cursor:pointer;font-size:14px;
+  }
+  .toggle input{accent-color:var(--accent);width:16px;height:16px;cursor:pointer}
+  .dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto}
+  .dot.sf{background:var(--sf)}
+  .dot.sfd{background:transparent;border:2px solid var(--sf-deleted)}
+  .dot.bf{background:var(--bf)}
+  .toggle .count{margin-left:auto;color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px}
+
+  #resulthead{
+    padding:10px 14px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;
+    color:var(--muted);border-bottom:1px solid var(--line);flex:0 0 auto;
+    display:flex;justify-content:space-between;align-items:center;gap:8px;
+  }
+  #resulthead button{
+    background:none;border:1px solid var(--line);color:var(--muted);border-radius:6px;
+    padding:3px 8px;font-size:11px;cursor:pointer;text-transform:none;letter-spacing:0;
+  }
+  #resulthead button:hover{color:var(--text);border-color:var(--muted)}
+
+  #list{overflow-y:auto;flex:1 1 auto;min-height:0}
+  .item{
+    padding:10px 14px;border-bottom:1px solid var(--line);cursor:pointer;
+    display:flex;gap:10px;align-items:flex-start;
+  }
+  .item:hover,.item:focus{background:var(--panel-2);outline:none}
+  .item .dot{margin-top:5px}
+  .item .name{font-weight:600;font-size:14px;line-height:1.3}
+  .item .meta{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .item .tag{font-size:11px;color:var(--sf-deleted)}
+  #empty{padding:22px 14px;color:var(--muted);font-size:14px;display:none}
+
+  #map{flex:1 1 auto;min-width:0;background:#0b0f13}
+
+  .leaflet-popup-content-wrapper{
+    background:var(--panel);color:var(--text);border-radius:10px;
+    box-shadow:0 8px 30px rgba(0,0,0,.5);
+  }
+  .leaflet-popup-tip{background:var(--panel)}
+  .leaflet-popup-content{margin:14px 16px;max-width:290px;font-size:13.5px;line-height:1.5}
+  .pop h3{margin:0 0 3px;font-size:15.5px;line-height:1.3}
+  .pop .kind{
+    display:inline-block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;
+    padding:2px 7px;border-radius:20px;margin-bottom:8px;
+  }
+  .pop .kind.sf{background:rgba(255,90,60,.16);color:#ff8f79}
+  .pop .kind.sfd{background:rgba(139,152,165,.18);color:#b6c1cc}
+  .pop .kind.bf{background:rgba(58,166,255,.16);color:#8fcbff}
+  .pop dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:3px 10px}
+  .pop dt{color:var(--muted);font-size:12px}
+  .pop dd{margin:0;font-size:13px}
+  .pop a{color:var(--accent)}
+  .pop .links{margin-top:10px;display:flex;flex-direction:column;gap:4px}
+
+  .legend{
+    background:var(--panel);padding:10px 12px;border-radius:9px;border:1px solid var(--line);
+    font-size:12.5px;line-height:1.8;box-shadow:0 4px 18px rgba(0,0,0,.4);
+  }
+  .legend .row{display:flex;align-items:center;gap:8px}
+
+  footer{
+    padding:9px 20px;background:var(--panel);border-top:1px solid var(--line);
+    color:var(--muted);font-size:12px;flex:0 0 auto;
+  }
+  footer a{color:var(--muted)}
+
+  #sidebar-toggle{display:none}
+
+  @media (max-width:820px){
+    #main{flex-direction:column}
+    #sidebar{width:auto;flex:0 0 auto;max-height:52%;border-right:none;
+      border-bottom:1px solid var(--line)}
+    #map{min-height:48vh}
+    header h1{font-size:17px}
+    #sidebar.collapsed #list,#sidebar.collapsed #resulthead,
+    #sidebar.collapsed #controls{display:none}
+    #sidebar-toggle{
+      display:block;width:100%;padding:10px;background:var(--panel-2);
+      border:none;border-top:1px solid var(--line);color:var(--text);
+      font-size:13px;cursor:pointer;
+    }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <h1>Contaminated Sites in the Houston TV Market</h1>
+    <span class="sub">EPA Superfund &amp; brownfield properties across the 20-county Houston DMA</span>
+  </header>
+
+  <div id="main">
+    <aside id="sidebar">
+      <div id="controls">
+        <label for="q">Search by name, city or address</label>
+        <input type="search" id="q" placeholder="e.g. San Jacinto, Pasadena, creosote" autocomplete="off">
+
+        <label for="county">County</label>
+        <select id="county"><option value="">All 20 DMA counties</option></select>
+
+        <div class="toggles">
+          <label class="toggle" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+            <input type="checkbox" id="t-sf" checked>
+            <span class="dot sf"></span> Superfund (NPL)
+            <span class="count" id="c-sf">0</span>
+          </label>
+          <label class="toggle" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+            <input type="checkbox" id="t-sfd" checked>
+            <span class="dot sfd"></span> Deleted from NPL
+            <span class="count" id="c-sfd">0</span>
+          </label>
+          <label class="toggle" style="margin:0;text-transform:none;letter-spacing:0;font-size:14px;color:var(--text)">
+            <input type="checkbox" id="t-bf" checked>
+            <span class="dot bf"></span> Brownfields
+            <span class="count" id="c-bf">0</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="resulthead">
+        <span id="resultcount">Loading…</span>
+        <button type="button" id="reset">Reset view</button>
+      </div>
+      <div id="list"></div>
+      <div id="empty">No sites match those filters.</div>
+      <button type="button" id="sidebar-toggle">Hide list</button>
+    </aside>
+
+    <div id="map"></div>
+  </div>
+
+  <footer>
+    Sources: EPA National Priorities List &amp; EPA Brownfields (ACRES), clipped to the
+    Nielsen Houston DMA with U.S. Census county boundaries.
+    <span id="built"></span>
+  </footer>
+</div>
+
+<script src="vendor/leaflet.js"></script>
+<script>
+(function(){
+  "use strict";
+
+  var map = L.map('map', { zoomControl: true, preferCanvas: true })
+             .setView([29.85, -95.4], 8);
+
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+    subdomains: 'abcd', maxZoom: 19
+  }).addTo(map);
+
+  var countyLayer = L.layerGroup().addTo(map);
+  var markerLayer = L.layerGroup().addTo(map);
+
+  var STYLE = {
+    sf:  { radius: 8, color: '#ff5a3c', fillColor: '#ff5a3c', weight: 1.5, fillOpacity: .8 },
+    sfd: { radius: 7, color: '#8b98a5', fillColor: '#0f1419', weight: 2,   fillOpacity: .85 },
+    bf:  { radius: 5, color: '#3aa6ff', fillColor: '#3aa6ff', weight: 1,   fillOpacity: .7 }
+  };
+
+  var sites = [];        // normalized records
+  var defaultBounds = null;
+
+  // ---- helpers -----------------------------------------------------------
+  function esc(s){
+    return String(s == null ? '' : s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+  // EPA ships some fields as pre-built <a> tags; take only the href.
+  function hrefOf(html){
+    if (!html) return null;
+    var m = /href="([^"]+)"/i.exec(html);
+    return m ? m[1] : null;
+  }
+  function titleCase(s){
+    return String(s || '').toLowerCase().replace(/\b[a-z]/g, function(c){
+      return c.toUpperCase();
+    });
+  }
+  function fmtDate(s){ return s ? s : null; }
+
+  // ---- load --------------------------------------------------------------
+  Promise.all([
+    fetch('data/superfund.geojson').then(function(r){ return r.json(); }),
+    fetch('data/brownfields.geojson').then(function(r){ return r.json(); }),
+    fetch('data/counties.geojson').then(function(r){ return r.json(); }),
+    fetch('data/meta.json').then(function(r){ return r.json(); })
+  ]).then(function(res){
+    var sf = res[0], bf = res[1], counties = res[2], meta = res[3];
+
+    // county outlines
+    var cl = L.geoJSON(counties, {
+      style: { color:'#4d5f70', weight:1, fill:true, fillColor:'#7f8fa0', fillOpacity:.05 },
+      interactive: false
+    }).addTo(countyLayer);
+    defaultBounds = cl.getBounds();
+    map.fitBounds(defaultBounds, { padding:[12,12] });
+
+    sf.features.forEach(function(f){
+      var p = f.properties;
+      var deleted = /deleted/i.test(p.Status || '');
+      sites.push({
+        kind: deleted ? 'sfd' : 'sf',
+        name: p.Site_Name,
+        county: p.dma_county,
+        city: titleCase(p.City),
+        lon: f.geometry.coordinates[0],
+        lat: f.geometry.coordinates[1],
+        status: p.Status,
+        epaId: p.Site_EPA_ID,
+        score: p.Site_Score,
+        listed: fmtDate(p.Listing_Date),
+        proposed: fmtDate(p.Proposed_Date),
+        constructionDone: fmtDate(p.Construction_Completion_Date),
+        deletedDate: fmtDate(p.Deletion_Date),
+        profileUrl: hrefOf(p.Site_Progress_Profile),
+        narrativeUrl: hrefOf(p.Site_Listing_Narrative),
+        search: [p.Site_Name, p.City, p.dma_county, p.Site_EPA_ID].join(' ').toLowerCase()
+      });
+    });
+
+    bf.features.forEach(function(f){
+      var p = f.properties;
+      sites.push({
+        kind: 'bf',
+        name: titleCase(p.primary_name),
+        county: p.dma_county,
+        city: titleCase(p.city_name),
+        address: titleCase(p.location_address),
+        zip: p.postal_code,
+        lon: f.geometry.coordinates[0],
+        lat: f.geometry.coordinates[1],
+        acresId: p.pgm_sys_id,
+        profileUrl: p.facility_url || null,
+        search: [p.primary_name, p.city_name, p.location_address, p.dma_county]
+                  .join(' ').toLowerCase()
+      });
+    });
+
+    // county dropdown
+    var sel = document.getElementById('county');
+    (meta.counties || []).forEach(function(c){
+      var o = document.createElement('option');
+      o.value = c; o.textContent = c + ' County';
+      sel.appendChild(o);
+    });
+
+    if (meta.built_utc) {
+      document.getElementById('built').textContent =
+        '· Data pulled ' + meta.built_utc.slice(0,10) + '.';
+    }
+
+    document.getElementById('c-sf').textContent =
+      sites.filter(function(s){ return s.kind === 'sf'; }).length;
+    document.getElementById('c-sfd').textContent =
+      sites.filter(function(s){ return s.kind === 'sfd'; }).length;
+    document.getElementById('c-bf').textContent =
+      sites.filter(function(s){ return s.kind === 'bf'; }).length;
+
+    render();
+  }).catch(function(err){
+    document.getElementById('resultcount').textContent = 'Could not load data.';
+    document.getElementById('empty').style.display = 'block';
+    document.getElementById('empty').textContent =
+      'Could not load the site data (' + err + '). If you opened this file directly ' +
+      'from disk, run it from a web server instead.';
+  });
+
+  // ---- popup -------------------------------------------------------------
+  function popupHtml(s){
+    var kindLabel = s.kind === 'bf' ? 'Brownfield property'
+                  : s.kind === 'sfd' ? 'Deleted from NPL' : 'Superfund — NPL site';
+    var h = '<div class="pop"><h3>' + esc(s.name) + '</h3>' +
+            '<span class="kind ' + s.kind + '">' + kindLabel + '</span><dl>';
+
+    function row(label, val){
+      if (val === null || val === undefined || val === '') return;
+      h += '<dt>' + esc(label) + '</dt><dd>' + esc(val) + '</dd>';
+    }
+
+    if (s.address) row('Address', s.address);
+    row('City', s.city);
+    row('County', s.county + ' County');
+    if (s.zip) row('ZIP', s.zip);
+    if (s.kind !== 'bf') {
+      row('EPA ID', s.epaId);
+      row('Hazard score', s.score);
+      row('Proposed', s.proposed);
+      row('Listed on NPL', s.listed);
+      row('Construction complete', s.constructionDone);
+      row('Deleted from NPL', s.deletedDate);
+    } else {
+      row('ACRES ID', s.acresId);
+    }
+    h += '</dl><div class="links">';
+    if (s.profileUrl) {
+      h += '<a href="' + esc(s.profileUrl) + '" target="_blank" rel="noopener">' +
+           (s.kind === 'bf' ? 'EPA property record &rarr;' : 'EPA site profile &rarr;') + '</a>';
+    }
+    if (s.narrativeUrl) {
+      h += '<a href="' + esc(s.narrativeUrl) + '" target="_blank" rel="noopener">' +
+           'Listing narrative (PDF) &rarr;</a>';
+    }
+    h += '</div></div>';
+    return h;
+  }
+
+  // ---- render ------------------------------------------------------------
+  var listEl = document.getElementById('list');
+  var emptyEl = document.getElementById('empty');
+  var markerFor = {};
+
+  function currentFilters(){
+    return {
+      q: document.getElementById('q').value.trim().toLowerCase(),
+      county: document.getElementById('county').value,
+      sf: document.getElementById('t-sf').checked,
+      sfd: document.getElementById('t-sfd').checked,
+      bf: document.getElementById('t-bf').checked
+    };
+  }
+
+  function matches(s, f){
+    if (!f[s.kind]) return false;
+    if (f.county && s.county !== f.county) return false;
+    if (f.q && s.search.indexOf(f.q) === -1) return false;
+    return true;
+  }
+
+  function render(){
+    var f = currentFilters();
+    var shown = sites.filter(function(s){ return matches(s, f); });
+
+    markerLayer.clearLayers();
+    markerFor = {};
+
+    // brownfields first so Superfund markers sit on top
+    shown.slice().sort(function(a, b){
+      return (a.kind === 'bf' ? 0 : 1) - (b.kind === 'bf' ? 0 : 1);
+    }).forEach(function(s, i){
+      var m = L.circleMarker([s.lat, s.lon], STYLE[s.kind])
+               .bindPopup(popupHtml(s), { maxWidth: 320 });
+      m.addTo(markerLayer);
+      markerFor[s.name + '|' + s.lat + '|' + s.lon] = m;
+    });
+
+    // list
+    listEl.innerHTML = '';
+    var frag = document.createDocumentFragment();
+    shown.slice()
+      .sort(function(a, b){
+        if (a.kind !== b.kind) {
+          var rank = { sf: 0, sfd: 1, bf: 2 };
+          return rank[a.kind] - rank[b.kind];
+        }
+        return a.name.localeCompare(b.name);
+      })
+      .forEach(function(s){
+        var div = document.createElement('div');
+        div.className = 'item';
+        div.tabIndex = 0;
+        div.innerHTML =
+          '<span class="dot ' + s.kind + '"></span><div>' +
+          '<div class="name">' + esc(s.name) + '</div>' +
+          '<div class="meta">' + esc([s.city, s.county + ' County'].filter(Boolean).join(' · ')) +
+          (s.kind === 'sfd' ? ' <span class="tag">· deleted from NPL</span>' : '') +
+          '</div></div>';
+        function go(){
+          map.flyTo([s.lat, s.lon], Math.max(map.getZoom(), 13), { duration: .6 });
+          var m = markerFor[s.name + '|' + s.lat + '|' + s.lon];
+          if (m) { setTimeout(function(){ m.openPopup(); }, 650); }
+        }
+        div.addEventListener('click', go);
+        div.addEventListener('keydown', function(e){
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+        });
+        frag.appendChild(div);
+      });
+    listEl.appendChild(frag);
+
+    document.getElementById('resultcount').textContent =
+      shown.length + (shown.length === 1 ? ' site' : ' sites') + ' shown';
+    emptyEl.style.display = shown.length ? 'none' : 'block';
+  }
+
+  ['q', 'county', 't-sf', 't-sfd', 't-bf'].forEach(function(id){
+    var el = document.getElementById(id);
+    el.addEventListener(el.tagName === 'INPUT' && el.type === 'search' ? 'input' : 'change',
+                        render);
+  });
+
+  document.getElementById('reset').addEventListener('click', function(){
+    document.getElementById('q').value = '';
+    document.getElementById('county').value = '';
+    document.getElementById('t-sf').checked = true;
+    document.getElementById('t-sfd').checked = true;
+    document.getElementById('t-bf').checked = true;
+    render();
+    if (defaultBounds) map.fitBounds(defaultBounds, { padding:[12,12] });
+  });
+
+  var sb = document.getElementById('sidebar');
+  document.getElementById('sidebar-toggle').addEventListener('click', function(){
+    sb.classList.toggle('collapsed');
+    this.textContent = sb.classList.contains('collapsed') ? 'Show list' : 'Hide list';
+    setTimeout(function(){ map.invalidateSize(); }, 60);
+  });
+
+  // legend
+  var legend = L.control({ position: 'bottomright' });
+  legend.onAdd = function(){
+    var d = L.DomUtil.create('div', 'legend');
+    d.innerHTML =
+      '<div class="row"><span class="dot sf"></span> Superfund (NPL)</div>' +
+      '<div class="row"><span class="dot sfd"></span> Deleted from NPL</div>' +
+      '<div class="row"><span class="dot bf"></span> Brownfield property</div>';
+    return d;
+  };
+  legend.addTo(map);
+})();
+</script>
+</body>
+</html>

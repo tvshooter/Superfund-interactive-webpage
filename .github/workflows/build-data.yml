@@ -22,6 +22,17 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Vendor Leaflet (so the page has no CDN dependency)
+        run: |
+          mkdir -p web/vendor/images
+          base=https://unpkg.com/leaflet@1.9.4/dist
+          curl -fsSL "$base/leaflet.js"  -o web/vendor/leaflet.js
+          curl -fsSL "$base/leaflet.css" -o web/vendor/leaflet.css
+          for img in marker-icon.png marker-icon-2x.png marker-shadow.png layers.png layers-2x.png; do
+            curl -fsSL "$base/images/$img" -o "web/vendor/images/$img"
+          done
+          ls -la web/vendor web/vendor/images
+
       - name: Fetch EPA + Census data
         run: python scripts/fetch_data.py
 
@@ -29,7 +40,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add web/data data-report.txt
+          git add web/data web/vendor data-report.txt
           if git diff --staged --quiet; then
             echo "No data changes."
           else
