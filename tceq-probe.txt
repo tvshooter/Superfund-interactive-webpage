@@ -1,0 +1,79 @@
+
+==============================================================================
+CATALOG https://gis-tceq.opendata.arcgis.com/api/feed/dcat-us/1.1.json
+==============================================================================
+  73 datasets
+
+  * Voluntary Cleanup Points
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/VCP/MapServer/0
+
+  * Superfund Points
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Superfund/MapServer/0
+
+  * LPST Points
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/LPST/MapServer/0
+
+  * Dry Cleaner Points
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/DryCleaner/MapServer/0
+
+  * Brownfields Points
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Brownfield/MapServer/0
+
+  * Petroleum Storage Tanks
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/PST/MapServer/0
+
+  * TCEQ Brownfields Program
+
+  * Landfills
+      [ArcGIS GeoServices REST API] https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Landfills/MapServer/0
+
+==============================================================================
+CATALOG https://gis-tceq.opendata.arcgis.com/api/search/v1/collections/dataset/items?limit=250
+==============================================================================
+  3 datasets
+
+==============================================================================
+CANDIDATE SERVICES — details
+==============================================================================
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Brownfield/MapServer/0
+      name='Brownfields' geom=esriGeometryPoint
+      fields: OBJECTID, REM_PROG, RN, BSA_ID, SITE_NAME, PHYS_ADDR, ADDR_DESC, CITY, COUNTY, ZIP_CODE, REGION, LAT_DD, LONG_DD, HORZ_METH, HORZ_ACC, HORZ_REF, HORZ_DATE, HORZ_ORG, HORZ_DATUM, HORZ_DESC, SHAPE
+      count in Houston bbox: {'count': 40}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 182454, "geometry": {"type": "Point", "coordinates": [-95.30144314506607, 29.856056669007224]}, "properties": {"OBJECTID": 182454, "REM_PROG": "Brownfields Site Assessment (BSA)", "RN": "RN100521053", "BSA_ID": "G038", "SITE_NAME": "HOMESTEAD PLAZA SHOPPING CENTER", "PHYS_ADDR": "9929 HOMESTEAD RD", "ADDR_DESC": "NEAR SWC OF HOMESTEAD RD AND PARKER RD", "CITY": "HOUSTON", "COUNTY": "HARRIS", "ZIP_CODE": "77016", "REGION": "REGION 12 - HOUSTON", "LAT_DD": 29.85605145, "LONG_DD": -95.30143616, "HORZ_METH": "DOQ", "HORZ_ACC": 5, "HORZ_REF": "FAC_CEN", "HORZ_DATE": "20010611", "HORZ_ORG": "TCEQ", "HORZ_DATUM": "NAD83", "HORZ_DESC": null}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/DryCleaner/MapServer/0
+      name='Dry Cleaner' geom=esriGeometryPoint
+      fields: OBJECTID, REM_PROG, RN, DCRP_ID, SITE_NAME, PHYS_ADDR, ADDR_DESC, CITY, COUNTY, ZIP_CODE, REGION, LAT_DD, LONG_DD, HORZ_METH, HORZ_ACC, HORZ_REF, HORZ_DATE, HORZ_ORG, HORZ_DATUM, HORZ_DESC, SHAPE
+      count in Houston bbox: {'count': 192}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 610020, "geometry": {"type": "Point", "coordinates": [-95.47872178732476, 30.028776024145756]}, "properties": {"OBJECTID": 610020, "REM_PROG": "Dry Cleaner Remediation Program (DCRP)", "RN": "RN103962379", "DCRP_ID": "DC0351", "SITE_NAME": "FORMER DRY CLEAN SUPER CENTER", "PHYS_ADDR": "17526 KUYKENDAHL RD", "ADDR_DESC": null, "CITY": "SPRING", "COUNTY": "HARRIS", "ZIP_CODE": "77379", "REGION": "REGION 12 - HOUSTON", "LAT_DD": 30.02877078, "LONG_DD": -95.47871474, "HORZ_METH": "DOQ", "HORZ_ACC": 5, "HORZ_REF": "OTHER", "HORZ_DATE": "20070813", "HORZ_ORG": "TCEQ", "HORZ_DATUM": "NAD83", "HORZ_DESC": null}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/LPST/MapServer/0
+      name='Leaking Petroleum Storage Tank' geom=esriGeometryPoint
+      fields: OBJECTID, REM_PROG, RN, PST_ID, LPST_ID, SITE_NAME, PHYS_ADDR, ADDR_DESC, CITY, COUNTY, ZIP_CODE, REGION, LAT_DD, LONG_DD, HORZ_METH, HORZ_ACC, HORZ_REF, HORZ_DATE, HORZ_ORG, HORZ_DATUM, HORZ_DESC, SHAPE
+      count in Houston bbox: {'count': 8460}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 9850733, "geometry": {"type": "Point", "coordinates": [-95.39531302078484, 29.781614225574696]}, "properties": {"OBJECTID": 9850733, "REM_PROG": "Leaking Petroleum Storage Tank (LPST)", "RN": "RN101885085", "PST_ID": null, "LPST_ID": 108330, "SITE_NAME": "CLOSED SERVICE STATION", "PHYS_ADDR": "3502 WHITE OAK DR", "ADDR_DESC": "3502 WHITE OAK", "CITY": "HOUSTON", "COUNTY": "HARRIS", "ZIP_CODE": "77007", "REGION": "REGION 12 - HOUSTON", "LAT_DD": 29.78160903, "LONG_DD": -95.39530601, "HORZ_METH": "ADDMAT_NUM", "HORZ_ACC": -9999, "HORZ_REF": "OTHER", "HORZ_DATE": "19940722", "HORZ_ORG": "TCEQ", "HORZ_DATUM": "NAD83", "HORZ_DESC": null}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Landfills/MapServer/0
+      name='Active Landfills' geom=esriGeometryPoint
+      fields: OBJECTID, SORT_NO, FACILITY_N, PERMIT_NUM, REGULATED_, LANDFILL_T, COUNTY, REGION, LATITUDE, LONGITUDE, LOCATION_D, ADDRESS, PHONE_NUMB, HORZ_METH, HORZ_ACC, HORZ_REF, HORZ_DATE, HORZ_ORG, HORZ_DATUM, SHAPE
+      count in Houston bbox: {'count': 39}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 4, "geometry": {"type": "Point", "coordinates": [-94.923179, 30.83383600000002]}, "properties": {"OBJECTID": 4, "SORT_NO": 1384, "FACILITY_N": "POLK COUNTY LANDFILL", "PERMIT_NUM": "1384A", "REGULATED_": "RN102668654", "LANDFILL_T": "1", "COUNTY": "POLK", "REGION": 10, "LATITUDE": 30.833835999999998, "LONGITUDE": -94.92317899999999, "LOCATION_D": "3477 FM 942 WEST", "ADDRESS": "3477 FM 942 W, LEGGETT, TX  77350", "PHONE_NUMB": "(936) 3276829", "HORZ_METH": "Unknown", "HORZ_ACC": "-9999", "HORZ_REF": "Other", "HORZ_DATE": "8/23/2018", "HORZ_ORG": "TCEQ", "HORZ_DATUM": "Unknown"}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/PST/MapServer/0
+      name='TCEQ Petroleum Storage Tanks (PST)' geom=esriGeometryPoint
+      fields: shape, pst_id, lpst_id, rn, tda_pst_id, lat_dd, long_dd, FAC_ID, UST_TYPE, APPROVED_DATE, ENERGY_ACT, NUM_ACTIVE_UST, FACILITY_NAME, ADDRESS, CITY, STATE, ZIP, PHYS_LOC_DESC_TXT, COUNTY, TCEQ_REGION, horz_meth, horz_acc, horz_ref, horz_date, horz_org, horz_datum, objectid
+      count in Houston bbox: {'count': 5700}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 38220, "geometry": {"type": "Point", "coordinates": [-95.04958000000558, 30.41158000007728]}, "properties": {"pst_id": "0065018", "lpst_id": null, "rn": "RN101739977", "tda_pst_id": null, "lat_dd": 30.411579999999997, "long_dd": -95.04957999999999, "FAC_ID": null, "UST_TYPE": null, "APPROVED_DATE": null, "ENERGY_ACT": null, "NUM_ACTIVE_UST": null, "FACILITY_NAME": null, "ADDRESS": null, "CITY": null, "STATE": null, "ZIP": null, "PHYS_LOC_DESC_TXT": null, "COUNTY": null, "TCEQ_REGION": null, "horz_meth": "GPS_DIFF", "horz_acc": 5, "horz_ref": null, "horz_date": 1328227200000, "horz_org": "UTA", "horz_datum": "NAD83", "objectid": 38220}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/Superfund/MapServer/0
+      name='Superfund' geom=esriGeometryPoint
+      fields: OBJECTID, REM_PROG, RN, EPA_TXID, SF_ID, SITE_NAME, PHYS_ADDR, ADDR_DESC, CITY, COUNTY, ZIP_CODE, REGION, WEB_URL, LAT_DD, LONG_DD, HORZ_METH, HORZ_ACC, HORZ_REF, HORZ_DATE, HORZ_ORG, HORZ_DATUM, HORZ_DESC, SHAPE
+      count in Houston bbox: {'count': 55}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 142568, "geometry": {"type": "Point", "coordinates": [-94.93333787072191, 29.334724130839106]}, "properties": {"OBJECTID": 142568, "REM_PROG": "Superfund (SF)", "RN": "RN100899483", "EPA_TXID": "TXD980629851", "SF_ID": "SUP129", "SITE_NAME": "MOTCO", "PHYS_ADDR": null, "ADDR_DESC": "NEAR JUNCTION OF HIGHWAY 3 & IH 45; 2 MI SE OF LAMARQUE", "CITY": "TEXAS CITY", "COUNTY": "GALVESTON", "ZIP_CODE": null, "REGION": "REGION 12 - HOUSTON", "WEB_URL": "http://cumulis.epa.gov/supercpad/cursites/csitinfo.cfm?id=0602673", "LAT_DD": 29.33471901, "LONG_DD": -94.933331, "HORZ_METH": "EPA_GIS", "HORZ_ACC": 5, "HORZ_REF": "OTHER", "HORZ_DATE": "19820723", "HORZ_ORG": "EPA", "HORZ_DATUM": "NAD83", "HORZ_DESC": null}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
+
+  https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/VCP/MapServer/0
+      name='Voluntary Cleanup' geom=esriGeometryPoint
+      fields: OBJECTID, REM_PROG, RN, VCP_ID, SITE_NAME, PHYS_ADDR, ADDR_DESC, CITY, COUNTY, ZIP_CODE, REGION, LAT_DD, LONG_DD, HORZ_METH, HORZ_ACC, HORZ_REF, HORZ_DATE, HORZ_ORG, HORZ_DATUM, HORZ_DESC, SHAPE
+      count in Houston bbox: {'count': 1063}
+      sample: {"type": "FeatureCollection", "features": [{"type": "Feature", "id": 1458607, "geometry": {"type": "Point", "coordinates": [-96.33556728847734, 30.596115331738474]}, "properties": {"OBJECTID": 1458607, "REM_PROG": "Voluntary Cleanup Program (VCP)", "RN": "RN101056265", "VCP_ID": 1061, "SITE_NAME": "HOLLEMAN SITE", "PHYS_ADDR": "101 LUTHER ST", "ADDR_DESC": "101 LUTHER STREET", "CITY": "COLLEGE STATION", "COUNTY": "BRAZOS", "ZIP_CODE": "77840", "REGION": "REGION 09 - WACO", "LAT_DD": 30.59611, "LONG_DD": -96.33556, "HORZ_METH": "UNKNOWN", "HORZ_ACC": -9999, "HORZ_REF": "OTHER", "HORZ_DATE": "19991004", "HORZ_ORG": "TCEQ", "HORZ_DATUM": "NAD83", "HORZ_DESC": null}}], "exceededTransferLimit": true, "properties": {"exceededTransferLimit": true}}
