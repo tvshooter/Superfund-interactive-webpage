@@ -73,15 +73,41 @@ def fetch(url, params=None, retries=4):
     raise RuntimeError(f"GET failed after {retries} tries: {url}\n  {last!r}")
 
 
-def layer_info(service_url):
-    """Return (layer_id, layer_meta) for the first point/polygon layer."""
+def inventory(service_url):
+    """List every layer in a feature service with its geometry type and count."""
     svc = fetch(service_url, {"f": "json"})
-    layers = svc.get("layers") or []
+    layers = (svc.get("layers") or []) + (svc.get("tables") or [])
     if not layers:
         raise RuntimeError(f"no layers in {service_url}: {json.dumps(svc)[:400]}")
-    lid = layers[0]["id"]
-    meta = fetch(f"{service_url}/{lid}", {"f": "json"})
-    return lid, meta
+    out = []
+    for lyr in layers:
+        lid = lyr["id"]
+        try:
+            meta = fetch(f"{service_url}/{lid}", {"f": "json"})
+        except Exception as exc:  # noqa: BLE001
+            print(f"    layer {lid}: metadata failed {exc!r}")
+            continue
+        out.append({
+            "id": lid,
+            "name": meta.get("name"),
+            "geometryType": meta.get("geometryType"),
+            "fields": [(f["name"], f.get("type"), f.get("alias"))
+                       for f in meta.get("fields", [])],
+        })
+        print(f"    layer {lid}: {meta.get('name')!r} "
+              f"geom={meta.get('geometryType')} fields={len(meta.get('fields', []))}")
+    return out
+
+
+def pick_layer(layers, prefer_substrings):
+    """Choose the point layer whose name best matches the preferred keywords."""
+    points = [l for l in layers if l["geometryType"] == "esriGeometryPoint"]
+    pool = points or layers
+    for sub in prefer_substrings:
+        for lyr in pool:
+            if sub.lower() in (lyr["name"] or "").lower():
+                return lyr
+    return pool[0]
 
 
 def query_all(layer_url, where="1=1", geometry=True, page=1000, use_bbox=True):
@@ -231,13 +257,13 @@ def assign_county(features, counties):
     return kept
 
 
-def collect(name, service_url):
+def collect(name, service_url, prefer):
     print(f"\n{name}: {service_url}")
-    lid, meta = layer_info(service_url)
-    fields = [(f["name"], f.get("type"), f.get("alias")) for f in meta.get("fields", [])]
-    print(f"  layer {lid} {meta.get('name')!r} ({len(fields)} fields)")
-    feats = query_all(f"{service_url}/{lid}")
-    return feats, fields, lid, meta.get("name")
+    layers = inventory(service_url)
+    chosen = pick_layer(layers, prefer)
+    print(f"  -> using layer {chosen['id']} {chosen['name']!r}")
+    feats = query_all(f"{service_url}/{chosen['id']}")
+    return feats, chosen["fields"], chosen["id"], chosen["name"], layers
 
 
 def simplify_counties(counties, tolerance=0.004):
@@ -279,8 +305,11 @@ def main():
         print("FATAL: no county boundaries resolved")
         return 1
 
-    sf_feats, sf_fields, sf_lid, sf_name = collect("Superfund NPL", SUPERFUND_SERVICE)
-    bf_feats, bf_fields, bf_lid, bf_name = collect("Brownfields", BROWNFIELDS_SERVICE)
+    sf_feats, sf_fields, sf_lid, sf_name, sf_layers = collect(
+        "Superfund NPL", SUPERFUND_SERVICE, ["npl", "superfund", "site"])
+    bf_feats, bf_fields, bf_lid, bf_name, bf_layers = collect(
+        "Brownfields", BROWNFIELDS_SERVICE,
+        ["propert", "acres", "brownfield"])
 
     print("\nClipping Superfund to DMA counties")
     sf_in = assign_county(sf_feats, counties)
@@ -323,6 +352,15 @@ def main():
     report.append(f"counties found: {found}")
     report.append(f"counties missing: {missing}")
     report.append(f"counts: {json.dumps(meta['counts'])}")
+    report.append("\nLAYER INVENTORY (what each EPA service offers)")
+    for label, layers in (("Superfund service", sf_layers),
+                          ("Brownfields service", bf_layers)):
+        report.append(f"  {label}:")
+        for lyr in layers:
+            report.append(f"    [{lyr['id']}] {lyr['name']!r} "
+                          f"geom={lyr['geometryType']} fields={len(lyr['fields'])}")
+    report.append(f"  chosen: superfund=[{sf_lid}] {sf_name!r}  "
+                  f"brownfields=[{bf_lid}] {bf_name!r}")
     for label, fields, feats in (("SUPERFUND", sf_fields, sf_in),
                                  ("BROWNFIELDS", bf_fields, bf_in)):
         report.append("\n" + "=" * 70)
