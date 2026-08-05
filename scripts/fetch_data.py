@@ -57,6 +57,11 @@ BROWNFIELDS_CANDIDATES = [
     "https://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer",
     f"{EPA_AGOL}/Brownfields/FeatureServer",
 ]
+# TCEQ's state cleanup programs, from the agency's public GIS services.
+TCEQ_VCP = "https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/VCP/MapServer/0"
+TCEQ_BSA = ("https://gisweb.tceq.texas.gov/arcgis/rest/services/Public/"
+            "Brownfield/MapServer/0")
+
 TIGERWEB_COUNTIES = (
     "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/"
     "State_County/MapServer/1"
@@ -137,20 +142,36 @@ def query_all(layer_url, where="1=1", geometry=True, page=1000, use_bbox=True):
             "spatialRel": "esriSpatialRelIntersects",
         })
 
-    features, offset = [], 0
+    features, offset, seen = [], 0, set()
     while True:
         data = fetch(layer_url + "/query", dict(
             params, resultOffset=str(offset), resultRecordCount=str(page)))
         if "error" in data:
             raise RuntimeError(f"query error: {json.dumps(data['error'])[:400]}")
         batch = data.get("features") or []
-        features.extend(batch)
+
+        # Some older MapServers ignore resultOffset and keep replaying page one;
+        # de-duplicate by feature id and stop when a page adds nothing new.
+        fresh = []
+        for f in batch:
+            fid = f.get("id")
+            if fid is None:
+                props = f.get("properties") or {}
+                fid = props.get("OBJECTID") or props.get("objectid") or json.dumps(
+                    props, sort_keys=True, default=str)
+            if fid in seen:
+                continue
+            seen.add(fid)
+            fresh.append(f)
+        features.extend(fresh)
+
         exceeded = data.get("properties", {}).get("exceededTransferLimit") or \
             data.get("exceededTransferLimit")
-        print(f"    +{len(batch)} (total {len(features)}) exceeded={exceeded}")
-        if len(batch) < page and not exceeded:
+        print(f"    +{len(fresh)} new of {len(batch)} (total {len(features)}) "
+              f"exceeded={exceeded}")
+        if not batch or not fresh:
             break
-        if not batch:
+        if len(batch) < page and not exceeded:
             break
         offset += len(batch)
         if offset > 200000:
@@ -347,16 +368,33 @@ def main():
         "Brownfields", BROWNFIELDS_CANDIDATES,
         ["brownfield", "propert", "acres"])
 
+    print("\nTCEQ Voluntary Cleanup Program")
+    vcp_feats = query_all(TCEQ_VCP)
+    print("TCEQ Brownfields Site Assessment")
+    bsa_feats = query_all(TCEQ_BSA)
+
     print("\nClipping Superfund to DMA counties")
     sf_in = assign_county(sf_feats, counties)
     print("Clipping Brownfields to DMA counties")
     bf_in = assign_county(bf_feats, counties)
+    print("Clipping TCEQ voluntary cleanup to DMA counties")
+    vcp_in = assign_county(vcp_feats, counties)
+    print("Clipping TCEQ brownfields to DMA counties")
+    bsa_in = assign_county(bsa_feats, counties)
+
+    # Both TCEQ programs share one schema; tag and merge them into one file.
+    for f in vcp_in:
+        f["properties"]["tceq_program"] = "vcp"
+    for f in bsa_in:
+        f["properties"]["tceq_program"] = "bsa"
+    tceq_in = vcp_in + bsa_in
 
     counties = simplify_counties(counties)
 
     write_geojson(os.path.join(OUT_DIR, "counties.geojson"), counties)
     write_geojson(os.path.join(OUT_DIR, "superfund.geojson"), sf_in)
     write_geojson(os.path.join(OUT_DIR, "brownfields.geojson"), bf_in)
+    write_geojson(os.path.join(OUT_DIR, "tceq.geojson"), tceq_in)
 
     meta = {
         "built_utc": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -366,17 +404,25 @@ def main():
         "counts": {
             "superfund": len(sf_in),
             "brownfields": len(bf_in),
+            "tceq_vcp": len(vcp_in),
+            "tceq_bsa": len(bsa_in),
             "superfund_in_bbox": len(sf_feats),
             "brownfields_in_bbox": len(bf_feats),
+            "tceq_vcp_in_bbox": len(vcp_feats),
+            "tceq_bsa_in_bbox": len(bsa_feats),
         },
         "sources": {
             "superfund": {"service": sf_service, "layer": sf_lid, "name": sf_name},
             "brownfields": {"service": bf_service, "layer": bf_lid, "name": bf_name},
+            "tceq_vcp": {"service": TCEQ_VCP},
+            "tceq_bsa": {"service": TCEQ_BSA},
             "counties": {"service": TIGERWEB_COUNTIES},
         },
         "fields": {
             "superfund": [f[0] for f in sf_fields],
             "brownfields": [f[0] for f in bf_fields],
+            "tceq": sorted({k for f in tceq_in[:50]
+                            for k in f["properties"].keys()}),
         },
     }
     with open(os.path.join(OUT_DIR, "meta.json"), "w") as fh:
@@ -394,8 +440,11 @@ def main():
         report.append(json.dumps(attempts, indent=2, default=str))
     report.append(f"  chosen: superfund=[{sf_lid}] {sf_name!r} @ {sf_service}")
     report.append(f"          brownfields=[{bf_lid}] {bf_name!r} @ {bf_service}")
+    tceq_fields = [(k, "", "") for k in
+                   (sorted(tceq_in[0]["properties"].keys()) if tceq_in else [])]
     for label, fields, feats in (("SUPERFUND", sf_fields, sf_in),
-                                 ("BROWNFIELDS", bf_fields, bf_in)):
+                                 ("BROWNFIELDS", bf_fields, bf_in),
+                                 ("TCEQ", tceq_fields, tceq_in)):
         report.append("\n" + "=" * 70)
         report.append(f"{label} FIELDS")
         report.append("=" * 70)
@@ -417,6 +466,31 @@ def main():
                         break
                 if len(vals) <= 25:
                     report.append(f"  {k}: {json.dumps({str(a): b for a, b in vals.items()})}")
+
+    # Is there a stable per-site TCEQ link? Test candidate Central Registry
+    # patterns against a real RN so the popup only ships a URL that works.
+    if tceq_in:
+        rn = tceq_in[0]["properties"].get("RN")
+        report.append("\n" + "=" * 70)
+        report.append(f"TCEQ CENTRAL REGISTRY LINK PROBE (rn={rn})")
+        report.append("=" * 70)
+        for pattern in [
+            "https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent."
+            "RNSearchResults&renumber={rn}",
+            "https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent."
+            "showoutlook&addn_id={rn}",
+            "https://www15.tceq.texas.gov/crpub/index.cfm?fuseaction=regent."
+            "RNSearch&renumber={rn}",
+        ]:
+            url = pattern.format(rn=rn)
+            try:
+                req = urllib.request.Request(url, headers=UA)
+                with urllib.request.urlopen(req, timeout=60, context=CTX) as resp:
+                    body = resp.read().decode("utf-8", "replace")
+                report.append(f"  {resp.status}  len={len(body)}  "
+                              f"rn_in_body={rn in body}  {url}")
+            except Exception as exc:  # noqa: BLE001
+                report.append(f"  FAILED {exc!r}  {url}")
 
     with open(os.path.join(ROOT, "data-report.txt"), "w") as fh:
         fh.write("\n".join(report))
