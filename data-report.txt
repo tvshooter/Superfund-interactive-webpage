@@ -1,5 +1,5 @@
 HOUSTON DMA SITE DATA REPORT
-built 2026-08-05T16:33:50+00:00
+built 2026-08-05T20:00:52+00:00
 counties found: ['Austin', 'Brazoria', 'Calhoun', 'Chambers', 'Colorado', 'Fort Bend', 'Galveston', 'Grimes', 'Harris', 'Jackson', 'Liberty', 'Matagorda', 'Montgomery', 'Polk', 'San Jacinto', 'Trinity', 'Walker', 'Waller', 'Washington', 'Wharton']
 counties missing: []
 counts: {"superfund": 25, "brownfields": 192, "superfund_in_bbox": 25, "brownfields_in_bbox": 220}
