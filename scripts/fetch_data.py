@@ -49,7 +49,14 @@ SUPERFUND_SERVICE = (
     f"{EPA_AGOL}/Superfund_National_Priorities_List_%28NPL%29_Sites_with_Status_Information"
     "/FeatureServer"
 )
-BROWNFIELDS_SERVICE = f"{EPA_AGOL}/Brownfields/FeatureServer"
+# EPA does not publish ACRES brownfield *properties* as a hosted AGOL layer
+# (that service only carries grant jurisdictions), so try the mapping services
+# that do, in order of preference.
+BROWNFIELDS_CANDIDATES = [
+    "https://geopub.epa.gov/arcgis/rest/services/EMEF/efpoints/MapServer",
+    "https://geodata.epa.gov/arcgis/rest/services/OEI/FRS_INTERESTS/MapServer",
+    f"{EPA_AGOL}/Brownfields/FeatureServer",
+]
 TIGERWEB_COUNTIES = (
     "https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb/"
     "State_County/MapServer/1"
@@ -257,13 +264,42 @@ def assign_county(features, counties):
     return kept
 
 
-def collect(name, service_url, prefer):
-    print(f"\n{name}: {service_url}")
-    layers = inventory(service_url)
-    chosen = pick_layer(layers, prefer)
-    print(f"  -> using layer {chosen['id']} {chosen['name']!r}")
-    feats = query_all(f"{service_url}/{chosen['id']}")
-    return feats, chosen["fields"], chosen["id"], chosen["name"], layers
+def collect(name, service_urls, prefer):
+    """Try each candidate service until one yields point features."""
+    if isinstance(service_urls, str):
+        service_urls = [service_urls]
+    attempts, last = [], None
+    for service_url in service_urls:
+        print(f"\n{name}: {service_url}")
+        try:
+            layers = inventory(service_url)
+        except Exception as exc:  # noqa: BLE001
+            print(f"  service unavailable: {exc!r}")
+            attempts.append({"service": service_url, "error": repr(exc)})
+            continue
+        chosen = pick_layer(layers, prefer)
+        print(f"  -> using layer {chosen['id']} {chosen['name']!r} "
+              f"({chosen['geometryType']})")
+        attempts.append({
+            "service": service_url,
+            "layers": [(l["id"], l["name"], l["geometryType"]) for l in layers],
+            "chosen": (chosen["id"], chosen["name"], chosen["geometryType"]),
+        })
+        if chosen["geometryType"] != "esriGeometryPoint":
+            print("  no point layer here, trying next candidate")
+            continue
+        try:
+            feats = query_all(f"{service_url}/{chosen['id']}")
+        except Exception as exc:  # noqa: BLE001
+            print(f"  query failed: {exc!r}")
+            attempts[-1]["error"] = repr(exc)
+            last = exc
+            continue
+        if feats:
+            return feats, chosen["fields"], chosen["id"], chosen["name"], attempts, service_url
+        print("  zero features returned, trying next candidate")
+    raise RuntimeError(f"{name}: no candidate service produced point features "
+                       f"(last error: {last!r})")
 
 
 def simplify_counties(counties, tolerance=0.004):
@@ -305,11 +341,11 @@ def main():
         print("FATAL: no county boundaries resolved")
         return 1
 
-    sf_feats, sf_fields, sf_lid, sf_name, sf_layers = collect(
+    sf_feats, sf_fields, sf_lid, sf_name, sf_layers, sf_service = collect(
         "Superfund NPL", SUPERFUND_SERVICE, ["npl", "superfund", "site"])
-    bf_feats, bf_fields, bf_lid, bf_name, bf_layers = collect(
-        "Brownfields", BROWNFIELDS_SERVICE,
-        ["propert", "acres", "brownfield"])
+    bf_feats, bf_fields, bf_lid, bf_name, bf_layers, bf_service = collect(
+        "Brownfields", BROWNFIELDS_CANDIDATES,
+        ["brownfield", "propert", "acres"])
 
     print("\nClipping Superfund to DMA counties")
     sf_in = assign_county(sf_feats, counties)
@@ -334,8 +370,8 @@ def main():
             "brownfields_in_bbox": len(bf_feats),
         },
         "sources": {
-            "superfund": {"service": SUPERFUND_SERVICE, "layer": sf_lid, "name": sf_name},
-            "brownfields": {"service": BROWNFIELDS_SERVICE, "layer": bf_lid, "name": bf_name},
+            "superfund": {"service": sf_service, "layer": sf_lid, "name": sf_name},
+            "brownfields": {"service": bf_service, "layer": bf_lid, "name": bf_name},
             "counties": {"service": TIGERWEB_COUNTIES},
         },
         "fields": {
@@ -352,15 +388,12 @@ def main():
     report.append(f"counties found: {found}")
     report.append(f"counties missing: {missing}")
     report.append(f"counts: {json.dumps(meta['counts'])}")
-    report.append("\nLAYER INVENTORY (what each EPA service offers)")
-    for label, layers in (("Superfund service", sf_layers),
-                          ("Brownfields service", bf_layers)):
+    report.append("\nSERVICE DISCOVERY (candidates tried, layers seen)")
+    for label, attempts in (("Superfund", sf_layers), ("Brownfields", bf_layers)):
         report.append(f"  {label}:")
-        for lyr in layers:
-            report.append(f"    [{lyr['id']}] {lyr['name']!r} "
-                          f"geom={lyr['geometryType']} fields={len(lyr['fields'])}")
-    report.append(f"  chosen: superfund=[{sf_lid}] {sf_name!r}  "
-                  f"brownfields=[{bf_lid}] {bf_name!r}")
+        report.append(json.dumps(attempts, indent=2, default=str))
+    report.append(f"  chosen: superfund=[{sf_lid}] {sf_name!r} @ {sf_service}")
+    report.append(f"          brownfields=[{bf_lid}] {bf_name!r} @ {bf_service}")
     for label, fields, feats in (("SUPERFUND", sf_fields, sf_in),
                                  ("BROWNFIELDS", bf_fields, bf_in)):
         report.append("\n" + "=" * 70)
